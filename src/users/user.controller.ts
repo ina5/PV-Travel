@@ -1,15 +1,16 @@
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './user.service';
-// import { ValidationPipe } from '../common/validation.pipe';
-import { Controller, Get, Post, HttpCode, Param, Body, Delete, HttpStatus, HttpException, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, HttpCode, Param, Body, Delete, HttpStatus, HttpException, ValidationPipe } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
     constructor(private readonly userService: UsersService) { }
-    @HttpCode(204)
-    @Post()
-    // @UsePipes(new ValidationPipe())
-    create(@Body() createUserDto: CreateUserDto) {
+    @HttpCode(201)
+    @Post('register')
+    create(@Body(new ValidationPipe({
+      whitelist: true,
+      transform: true,
+    })) createUserDto: CreateUserDto) {
 
         if (Object.keys(createUserDto).length === 0) {
             throw new HttpException({
@@ -17,7 +18,8 @@ export class UsersController {
                 error: 'User is not valid',
             }, 403);
         }
-        return this.userService.create(createUserDto);
+        this.userService.create(createUserDto);
+        return 'User was created!';
     }
     @HttpCode(200)
     @Get()
