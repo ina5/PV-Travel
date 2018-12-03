@@ -1,4 +1,4 @@
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDTO } from './dto/create-user.dto';
 import { UsersService } from './user.service';
 // import { ValidationPipe } from '../common/validation.pipe';
 import { Controller, Get, Post, HttpCode, Param, Body, Delete, HttpStatus, HttpException, UsePipes } from '@nestjs/common';
@@ -9,15 +9,15 @@ export class UsersController {
     @HttpCode(204)
     @Post()
     // @UsePipes(new ValidationPipe())
-    create(@Body() createUserDto: CreateUserDto) {
+    create(@Body() createUserDTO: CreateUserDTO) {
 
-        if (Object.keys(createUserDto).length === 0) {
+        if (Object.keys(createUserDTO).length === 0) {
             throw new HttpException({
                 status: HttpStatus.FORBIDDEN,
                 error: 'User is not valid',
             }, 403);
         }
-        return this.userService.create(createUserDto);
+        return this.userService.create(createUserDTO);
     }
     @HttpCode(200)
     @Get()
