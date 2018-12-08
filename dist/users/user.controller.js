@@ -19,14 +19,15 @@ let UsersController = class UsersController {
     constructor(userService) {
         this.userService = userService;
     }
-    create(createUserDto) {
-        if (createUserDto === null) {
+    create(createUserDTO) {
+        if (Object.keys(createUserDTO).length === 0) {
             throw new common_1.HttpException({
                 status: common_1.HttpStatus.FORBIDDEN,
                 error: 'User is not valid',
             }, 403);
         }
-        return this.userService.create(createUserDto);
+        this.userService.create(createUserDTO);
+        return 'User was created!';
     }
     findAll() {
         if (this.userService) {
@@ -42,11 +43,14 @@ let UsersController = class UsersController {
     }
 };
 __decorate([
-    common_1.HttpCode(204),
-    common_1.Post(),
-    __param(0, common_1.Body()),
+    common_1.HttpCode(201),
+    common_1.Post('register'),
+    __param(0, common_1.Body(new common_1.ValidationPipe({
+        whitelist: true,
+        transform: true,
+    }))),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
+    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDTO]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "create", null);
 __decorate([

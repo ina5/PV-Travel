@@ -16,7 +16,7 @@ let AppController = class AppController {
         this.appService = appService;
     }
     root() {
-        return { name: 'John' };
+        return { name: 'user' };
     }
 };
 __decorate([

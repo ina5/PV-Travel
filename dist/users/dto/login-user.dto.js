@@ -10,34 +10,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const class_validator_1 = require("class-validator");
-class CreateUserDTO {
+class LoginUserDTO {
 }
-__decorate([
-    class_validator_1.IsInt(),
-    __metadata("design:type", Number)
-], CreateUserDTO.prototype, "id", void 0);
-__decorate([
-    class_validator_1.Length(3, 20),
-    class_validator_1.IsString(),
-    __metadata("design:type", String)
-], CreateUserDTO.prototype, "firstName", void 0);
-__decorate([
-    class_validator_1.Length(3, 20),
-    class_validator_1.IsString(),
-    __metadata("design:type", String)
-], CreateUserDTO.prototype, "lastName", void 0);
 __decorate([
     class_validator_1.Length(3, 10),
     class_validator_1.IsString(),
     __metadata("design:type", String)
-], CreateUserDTO.prototype, "username", void 0);
+], LoginUserDTO.prototype, "username", void 0);
 __decorate([
     class_validator_1.IsString(),
     __metadata("design:type", String)
-], CreateUserDTO.prototype, "password", void 0);
-__decorate([
-    class_validator_1.IsString(),
-    __metadata("design:type", String)
-], CreateUserDTO.prototype, "email", void 0);
-exports.CreateUserDTO = CreateUserDTO;
-//# sourceMappingURL=create-user.dto.js.map
+], LoginUserDTO.prototype, "password", void 0);
+exports.LoginUserDTO = LoginUserDTO;
+//# sourceMappingURL=login-user.dto.js.map
