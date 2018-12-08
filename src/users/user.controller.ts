@@ -1,6 +1,6 @@
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UsersService } from './user.service';
-import { Controller, Get, Post, HttpCode, Param, Body, Delete, HttpStatus, HttpException, ValidationPipe, Query } from '@nestjs/common';
+import { Controller, Get, Post, HttpCode, Param, Body, Delete, HttpStatus, HttpException, ValidationPipe } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
@@ -24,19 +24,16 @@ export class UsersController {
     @HttpCode(200)
     @Get('')
     findAll() {
-        if (this.userService) {
-            return this.userService.findAll();
-        }
-        return HttpStatus.NOT_FOUND;
+
+        return this.userService.findAll();
     }
     @HttpCode(200)
     @Get(':id')
     findOne(@Param('id') id) {
-        if (this.userService) {
-            return this.userService.findOne(id);
-        }
-        return HttpStatus.NOT_FOUND;
+
+        return this.userService.findOne(id);
     }
+
     @HttpCode(200)
     @Delete(':id')
     remove(@Param('id') id) {
