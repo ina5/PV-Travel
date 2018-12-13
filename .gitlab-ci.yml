@@ -1,0 +1,31 @@
+image: node:11.1.0
+stages:
+  - install
+  - build
+  - lint_test
+cache:
+  key: "${CI_COMMIT_REF_NAME}-${CI_PIPELINE_ID}"
+  paths:
+  - node_modules/
+  - dist/
+install:
+  stage: install
+  script:
+    - cd "OOP project"
+    - npm install
+build:
+  stage: build
+  script:
+    - cd "OOP project"
+    - npm run build
+lint:
+  stage: lint_test
+  script:
+    - cd "OOP project"
+    - npm run lint
+test:
+  stage: lint_test
+  script:
+    - cd "OOP project"
+    - npm run test
+  coverage: /All files[^|]*\|[^|]*\s+[\d\.]+[^|]*\|[^|]*\s+[\d\.]+[^|]*\|[^|]*\s+[\d\.]+[^|]*\|[^|]*\s+([\d\.]+)/
