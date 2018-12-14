@@ -11,21 +11,20 @@ cache:
 install:
   stage: install
   script:
-    - cd "OOP project"
     - npm install
 build:
   stage: build
   script:
-    - cd "OOP project"
+  
     - npm run build
 lint:
   stage: lint_test
   script:
-    - cd "OOP project"
+   
     - npm run lint
 test:
   stage: lint_test
   script:
-    - cd "OOP project"
+   
     - npm run test
   coverage: /All files[^|]*\|[^|]*\s+[\d\.]+[^|]*\|[^|]*\s+[\d\.]+[^|]*\|[^|]*\s+[\d\.]+[^|]*\|[^|]*\s+([\d\.]+)/

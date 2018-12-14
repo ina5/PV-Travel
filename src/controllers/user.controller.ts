@@ -3,6 +3,8 @@ import { UsersService } from '../services/user.service';
 import { Controller, Get, Post, HttpCode, Param, Body, Delete, HttpStatus, HttpException, ValidationPipe, UseGuards } from '@nestjs/common';
 import { Roles } from '../decorators/roles.decorator';
 import { RolesGuard } from '../guards/roles.guard';
+import {getManager, getRepository} from 'typeorm';
+import { User } from 'src/entity';
 
 @Controller('users')
 export class UsersController {
@@ -31,15 +33,15 @@ export class UsersController {
     // @Roles('admin')
     // @UseGuards(RolesGuard)
     findAll() {
-
+        return getManager().find(User);
         return this.userService.findAll();
     }
     @HttpCode(200)
     @Get(':id')
     @Roles('admin')
     @UseGuards(RolesGuard)
-    findOne(@Param('id') id) {
-
+    findOne(@Param('id') id: number) {
+        return getRepository(User).findOne(id);
         return this.userService.findOne(id);
     }
 

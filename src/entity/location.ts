@@ -1,7 +1,5 @@
-
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Holiday } from './holiday';
-
 
 @Entity('locations')
 export class Location {
@@ -9,7 +7,7 @@ export class Location {
     id: number;
 
     @Column({
-        length: 100
+        length: 100,
     })
     name: string;
     holidays: Promise<Holiday[]>;
