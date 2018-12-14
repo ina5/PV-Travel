@@ -1,9 +1,8 @@
-import "reflect-metadata";
-import { createConnection } from "typeorm";
-
+import 'reflect-metadata';
+import { createConnection } from 'typeorm';
+import { User, Role } from './entity';
 
 // createConnection().then(async connection => {
-
 
     // default
     // console.log("Inserting a new user into the database...");
@@ -22,17 +21,32 @@ import { createConnection } from "typeorm";
 // }).catch(error => console.log(error));
 
 createConnection({
-    type: "mariadb",
-    host: "localhost",
-    port: 5005,
-    username: "root",
-    password: "ina",
-    database: "pvtravel",
+    type: 'mariadb',
+    host: 'localhost',
+    port: 3306,
+    username: 'root',
+    password: 'noroots',
+    database: 'pvtravel',
     entities: [
-        __dirname + "/entity/*.ts"
+        __dirname + '/entity/*.ts',
     ],
     synchronize: true,
-    logging: false
-}).then(connection => {
+    logging: false,
+}).then(async connection => {
     // here you can start to work with your entities
+
+    const user = new User();
+    user.firstName = 'Pesho';
+    user.lastName = 'Balkanski';
+    user.username = 'pesh000';
+    user.password = 'mnogoslojnaparola';
+    user.email = 'pesho@gosho.com';
+
+    const userRepository = connection.getRepository(User);
+
+    await userRepository.save(user);
+    console.log('User has been saved!');
+
+    const savedUsers = await userRepository.find();
+    console.log('All users from the db: ', savedUsers);
 }).catch(error => console.log(error));

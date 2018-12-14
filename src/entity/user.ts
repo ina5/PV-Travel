@@ -7,16 +7,16 @@ export class User {
     @PrimaryGeneratedColumn('uuid')
     id: number;
     @Column({
-        length: 100
+        length: 100,
     })
     firstName: string;
     @Column({
         length: 100,
-        nullable: true
+        nullable: true,
     })
     lastName: string;
     @Column({
-        length: 100
+        length: 100,
     })
     username: string;
     @Column({
@@ -30,10 +30,8 @@ export class User {
     })
     email: string;
 
-
     @ManyToMany(type => Holiday, holiday => holiday.users, { cascade: ['insert'] })
-    holidays: Promise<Holiday[]>;
+    holidays?: Promise<Holiday[]>;
     @ManyToOne(type => Role, role => role.users)
-    role: Role;
-    eager: true;
+    role: string;
 }

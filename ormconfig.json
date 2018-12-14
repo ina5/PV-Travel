@@ -1,12 +1,12 @@
 {
    "type": "mariadb",
    "host": "localhost",
-   "port": 5005,
+   "port": 3306,
    "username": "root",
-   "password": "ina",
+   "password": "noroots",
    "database": "pvtravel",
    "synchronize": true,
-   "logging": false,
+   "logging": true,
    "entities": [
       "src/entity/**/*.ts"
    ],

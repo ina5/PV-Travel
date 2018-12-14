@@ -2,14 +2,13 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, ManyToOn
 import { User } from './user';
 import { Location } from './location';
 
-
 @Entity('holidays')
 export class Holiday {
     @PrimaryGeneratedColumn('uuid')
     id: number;
 
     @Column({
-        length: 100
+        length: 100,
     })
     title: string;
 
