@@ -1,7 +1,7 @@
-import { LoginService } from './../login/login.service';
-import { JwtPayload } from './interfaces/jwt-payload';
+import { JwtPayload } from './../interfaces/jwt.interface';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { LoginService } from '../services/login.service';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +14,6 @@ export class AuthService {
   }
 
   async validateUser(payload: JwtPayload) {
-    return !!this.loginService.getByUsername(payload.username);
+    return !!this.loginService.getByUserName(payload.username);
   }
 }
