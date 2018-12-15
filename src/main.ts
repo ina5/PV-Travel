@@ -1,14 +1,15 @@
+import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { join } from 'path';
 import { AppModule } from './app.module';
-import 'reflect-metadata';
+import * as cors from 'cors';
+import { ConfigService } from './config/config.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  app.use(cors());
   app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.setBaseViewsDir(join(__dirname, '..', 'views'));
-  app.setViewEngine('hbs');
-  await app.listen(3000);
+
+  await app.listen(app.get(ConfigService).port);
 }
 bootstrap();

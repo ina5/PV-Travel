@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, ManyToOne } from 'typeorm';
-import { User } from './user';
-import { Location } from './location';
+import { User } from './user.entity';
+import { Location } from './location.entity';
 
 @Entity('holidays')
 export class Holiday {
