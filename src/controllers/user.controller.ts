@@ -9,25 +9,7 @@ import { User } from 'src/data-base/entity/user.entity';
 @Controller('users')
 export class UsersController {
     constructor(private readonly userService: UsersService) { }
-    @HttpCode(201)
-    @Post('register')
-    // @Roles('admin', 'client')
-    // @UseGuards(RolesGuard)
 
-    create(@Body(new ValidationPipe({
-        whitelist: true,
-        transform: true,
-    })) createUserDTO: CreateUserDTO) {
-        console.log(createUserDTO);
-        // if (Object.keys(createUserDTO).length === 0) {
-        //     throw new HttpException({
-        //         status: HttpStatus.FORBIDDEN,
-        //         error: 'User is not valid',
-        //     }, 403);
-        // }
-        this.userService.create(createUserDTO);
-        return 'User was created!';
-    }
     @HttpCode(200)
     @Get('')
     // @Roles('admin')

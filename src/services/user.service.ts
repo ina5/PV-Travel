@@ -1,17 +1,17 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { IsEmpty } from 'class-validator';
-import { User } from '../interfaces/user.interface';
+import { IUser } from '../interfaces/user.interface';
 
 @Injectable()
 export class UsersService {
-    private readonly users: User[] = [];
+    private readonly users: IUser[] = [];
 
-    create(user: User) {
+    create(user: IUser) {
         this.users.push(user);
         HttpStatus.OK;
     }
 
-    findAll(): User[] {
+    findAll(): IUser[] {
         return this.users;
     }
     findOne(id) {

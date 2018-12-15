@@ -1,20 +1,46 @@
+import { CreateUserDTO } from './../dto/create-user.dto';
 import { AuthService } from '../auth/auth.service';
-import { Controller, Post, Body } from '@nestjs/common';
+import { LoginUserDTO } from '../dto/login-user.dto';
+import { Controller, Post, Body, ValidationPipe, BadRequestException, HttpStatus } from '@nestjs/common';
 import { LoginService } from '../services/login.service';
 
-@Controller()
+@Controller('auth')
 export class AuthController {
-    // constructor(
-    //     private readonly authService: AuthService,
-    //     private readonly loginService: LoginService) { }
+    constructor(
+        private readonly authService: AuthService,
 
-    // @Post('login')
-    // async login(@Body() user) {
-    //     if (this.loginService.isLoggedIn(user)) {
-    //         return await this.authService.sign({ username: user.username });
-    //     }
-    //     else {
-    //         return 'No such user!';
-    //     }
-    // }
+        private readonly loginService: LoginService) { }
+
+    @Post('login')
+    async sign(@Body(new ValidationPipe({
+        transform: true,
+        whitelist: true,
+    })) user: LoginUserDTO): Promise<string> {
+        const token = await this.authService.signIn(user);
+        if (!token) {
+            throw new BadRequestException('Wrong credentials!');
+        }
+
+        return token;
+    }
+
+    @Post('register')
+    async register(
+        @Body(new ValidationPipe({
+            transform: true,
+            whitelist: true,
+        }))
+        user: CreateUserDTO,
+    ): Promise<any> {
+        try {
+            await this.loginService.registerUser(user);
+            return HttpStatus.CREATED;
+        } catch (error) {
+            await new Promise((resolve, reject) => {
+                resolve();
+            });
+
+            return (error.message);
+        }
+    }
 }
