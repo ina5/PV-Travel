@@ -1,25 +1,12 @@
-{
+[{
    "type": "mariadb",
    "host": "localhost",
-   "port": 3306,
+   "port": 5005,
    "username": "root",
-   "password": "noroots",
+   "password": "ina",
    "database": "pvtravel",
-   "synchronize": false,
-   "logging": true,
-   "logger": true,
+   "synchronize": true,
    "entities": [
-      "src/entity/**/*.ts"
-   ],
-   "migrations": [
-      "src/migration/**/*.ts"
-   ],
-   "subscribers": [
-      "src/subscriber/**/*.ts"
-   ],
-   "cli": {
-      "entitiesDir": "src/entity",
-      "migrationsDir": "src/migration",
-      "subscribersDir": "src/subscriber"
-   }
-}
+       "src/data-base/entity/*.entity.ts"
+   ]
+}]
