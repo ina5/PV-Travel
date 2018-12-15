@@ -1,10 +1,10 @@
 import { CreateUserDTO } from '../dto/create-user.dto';
 import { UsersService } from '../services/user.service';
 import { Controller, Get, Post, HttpCode, Param, Body, Delete, HttpStatus, HttpException, ValidationPipe, UseGuards } from '@nestjs/common';
-import { Roles } from '../decorators/roles.decorator';
-import { RolesGuard } from '../guards/roles.guard';
 import {getManager, getRepository} from 'typeorm';
-import { User } from 'src/entity';
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
+import { User } from 'src/data-base/entity/user';
 
 @Controller('users')
 export class UsersController {

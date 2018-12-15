@@ -5,8 +5,9 @@
    "username": "root",
    "password": "noroots",
    "database": "pvtravel",
-   "synchronize": true,
+   "synchronize": false,
    "logging": true,
+   "logger": true,
    "entities": [
       "src/entity/**/*.ts"
    ],

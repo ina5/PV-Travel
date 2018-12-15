@@ -1,13 +1,13 @@
 import 'reflect-metadata';
 import {createConnection, Connection} from 'typeorm';
-import { User } from './entity';
+import { User } from './data-base/entity/user';
 
 createConnection({
     type: 'mariadb',
     host: 'localhost',
-    port: 3306,
+    port: 5005,
     username: 'root',
-    password: 'noroots',
+    password: 'ina',
     database: 'pvtravel',
     entities: [
         __dirname + '/entity/*.ts',
