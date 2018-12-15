@@ -6,7 +6,8 @@
    "password": "ina",
    "database": "pvtravel",
    "synchronize": true,
+   "migrationsTableName": "custom_migration_table",
    "entities": [
-       "src/data-base/entity/*.entity.ts"
+      "src/data-base/entity/*.entity.ts"
    ]
 }]
