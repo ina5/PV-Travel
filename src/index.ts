@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import {createConnection, Connection} from 'typeorm';
-import { User } from './data-base/entity/user';
+import { User } from './data-base/entity/user.entity';
 
 createConnection({
     type: 'mariadb',

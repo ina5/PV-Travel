@@ -4,7 +4,7 @@ import { Controller, Get, Post, HttpCode, Param, Body, Delete, HttpStatus, HttpE
 import {getManager, getRepository} from 'typeorm';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
-import { User } from 'src/data-base/entity/user';
+import { User } from 'src/data-base/entity/user.entity';
 
 @Controller('users')
 export class UsersController {
