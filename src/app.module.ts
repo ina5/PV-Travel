@@ -7,10 +7,26 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './modules/user.module';
 import { ConfigModule } from './config/config.module';
 import { DataModule } from './data-base/data.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './data-base/entity/user.entity';
+import { ConfigService } from './config/config.service';
 
 @Module({
 
-  imports: [UserModule, AuthModule, HolidayModule, ConfigModule, HttpModule, DataModule],
+  imports: [UserModule, AuthModule, HolidayModule, ConfigModule, HttpModule,
+    TypeOrmModule.forRootAsync({
+    useFactory: async (configService: ConfigService) => ({
+        type: configService.dbType as any,
+        host: configService.dbHost,
+        port: configService.dbPort,
+        username: configService.dbUsername,
+        password: configService.dbPassword,
+        database: configService.dbName,
+        entities: ['./src/data-base/entity/*.entity.ts'],
+    }),
+    imports: [ConfigModule],
+    inject: [ConfigService],
+})],
   controllers: [AppController],
   providers: [AppService],
 

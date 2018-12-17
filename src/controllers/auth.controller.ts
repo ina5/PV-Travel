@@ -1,7 +1,7 @@
 import { CreateUserDTO } from './../dto/create-user.dto';
 import { AuthService } from '../auth/auth.service';
 import { LoginUserDTO } from '../dto/login-user.dto';
-import { Controller, Post, Body, ValidationPipe, BadRequestException, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, ValidationPipe, BadRequestException, HttpStatus, Get } from '@nestjs/common';
 import { LoginService } from '../services/login.service';
 
 @Controller('auth')
@@ -18,9 +18,8 @@ export class AuthController {
     })) user: LoginUserDTO): Promise<string> {
         const token = await this.authService.signIn(user);
         if (!token) {
-            throw new BadRequestException('Wrong credentials!');
+            throw new BadRequestException('Wrong');
         }
-
         return token;
     }
 
