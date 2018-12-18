@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Holiday } from './holiday';
+import { Holiday } from './holiday.entity';
 
 @Entity('locations')
 export class Location {

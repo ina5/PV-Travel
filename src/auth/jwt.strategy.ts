@@ -4,17 +4,21 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { JwtPayload } from '../interfaces/jwt.interface';
 import { AuthService } from './auth.service';
+import { ConfigService } from 'src/config/config.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-    constructor(private readonly authService: AuthService) {
+    constructor(private readonly authService: AuthService, private readonly configService: ConfigService) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            secretOrKey: 'pvproject',  // Verification of our token
+            secretOrKey: configService.jwtSecret,  // Verification of our token
         });
     }
-    async validate(payload: JwtPayload) {
+    async validate(payload: JwtPayload): Promise<any> {
         const user = await this.authService.validateUser(payload);
+        if (!user) {
+            throw new Error('Not authorized');
+        }
         return user;
     }
 }
