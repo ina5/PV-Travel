@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Holiday } from './holiday.entity';
+import { HolidayEntity } from './holiday.entity';
 
 @Entity('locations')
 export class Location {
@@ -10,6 +10,6 @@ export class Location {
         length: 100,
     })
     name: string;
-    holidays: Promise<Holiday[]>;
+    holidays: Promise<HolidayEntity[]>;
     eager: true;
 }

@@ -1,6 +1,6 @@
-import { HolidaysService } from './holiday.service';
+import { HolidaysService } from '../services/holiday.service';
 import { Controller, HttpCode, Post, Body, ValidationPipe, HttpException, HttpStatus, Get, Param, Delete } from '@nestjs/common';
-import { CreateHolidayDTO } from './dto/create-holiday.dto';
+import { CreateHolidayDTO } from '../holidays/dto/create-holiday.dto';
 
 @Controller('holidays')
 export class HolidaysController {

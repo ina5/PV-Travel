@@ -1,14 +1,12 @@
 
-import { HolidayModule } from './holidays/holiday.module';
+import { HolidayModule } from './modules/holiday.module';
 import { Module, HttpModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './modules/user.module';
 import { ConfigModule } from './config/config.module';
-import { DataModule } from './data-base/data.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './data-base/entity/user.entity';
 import { ConfigService } from './config/config.service';
 
 @Module({
