@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, ManyToOne } from 'typeorm';
-import { Holiday } from './holiday';
-import { Role } from './role';
+import { Holiday } from './holiday.entity';
+import { Role } from './role.entity';
 
 @Entity('users')
 export class User {
