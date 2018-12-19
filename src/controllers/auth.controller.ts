@@ -1,15 +1,14 @@
+import { UsersService } from 'src/services/user.service';
 import { CreateUserDTO } from './../dto/create-user.dto';
 import { AuthService } from '../auth/auth.service';
 import { LoginUserDTO } from '../dto/login-user.dto';
 import { Controller, Post, Body, ValidationPipe, BadRequestException, HttpStatus, Get } from '@nestjs/common';
-import { LoginService } from '../services/login.service';
-
 @Controller('auth')
 export class AuthController {
     constructor(
         private readonly authService: AuthService,
 
-        private readonly loginService: LoginService) { }
+        private readonly userService: UsersService) { }
 
     @Post('login')
     async sign(@Body(new ValidationPipe({
@@ -32,7 +31,7 @@ export class AuthController {
         user: CreateUserDTO,
     ): Promise<any> {
         try {
-            await this.loginService.registerUser(user);
+            await this.userService.registerUser(user);
             return HttpStatus.CREATED;
         } catch (error) {
             await new Promise((resolve, reject) => {

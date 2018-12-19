@@ -1,9 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, ManyToOne } from 'typeorm';
-import { User } from './user.entity';
-import { Location } from './location.entity';
+import { UserEntity } from './user.entity';
+import { LocationEntity } from './location.entity';
 
 @Entity('holidays')
-export class Holiday {
+export class HolidayEntity {
     @PrimaryGeneratedColumn('uuid')
     id: number;
 
@@ -20,12 +20,12 @@ export class Holiday {
     price: number;
     @Column('text')
     description: string;
-    @ManyToMany(type => User, user => user.holidays, {
+    @ManyToMany(type => UserEntity, user => user.holidays, {
         cascade: ['insert'],
     })
     @JoinTable()
-    users: Promise<User[]>;
-    @ManyToOne(type => Location, location => location.holidays)
-    location: Location;
+    users?: Promise<UserEntity[]>;
+    @ManyToOne(type => LocationEntity, location => location.holidays)
+    location?: LocationEntity;
     eager: true;
 }

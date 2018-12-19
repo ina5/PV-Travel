@@ -1,9 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, ManyToOne } from 'typeorm';
-import { Holiday } from './holiday.entity';
-import { Role } from './role.entity';
+import { HolidayEntity } from './holiday.entity';
+import { RoleEntity } from './role.entity';
 
 @Entity('users')
-export class User {
+export class UserEntity {
     @PrimaryGeneratedColumn('uuid')
     id: number;
     @Column({
@@ -12,7 +12,6 @@ export class User {
     firstName: string;
     @Column({
         length: 100,
-        nullable: true,
     })
     lastName: string;
     @Column({
@@ -30,8 +29,8 @@ export class User {
     })
     email: string;
 
-    @ManyToMany(type => Holiday, holiday => holiday.users, { cascade: ['insert'] })
-    holidays?: Promise<Holiday[]>;
-    @ManyToOne(type => Role, role => role.users)
-    role: string;
+    @ManyToMany(type => HolidayEntity, holiday => holiday.users, { cascade: ['insert'] })
+    holidays?: Promise<HolidayEntity[]>;
+    @ManyToOne(type => RoleEntity, role => role.users)
+    role?: string;
 }

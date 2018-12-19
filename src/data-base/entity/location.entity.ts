@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Holiday } from './holiday.entity';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { HolidayEntity } from './holiday.entity';
 
 @Entity('locations')
-export class Location {
+export class LocationEntity {
     @PrimaryGeneratedColumn('uuid')
     id: number;
 
@@ -10,6 +10,6 @@ export class Location {
         length: 100,
     })
     name: string;
-    holidays: Promise<Holiday[]>;
+    holidays?: Promise<HolidayEntity[]>;
     eager: true;
 }

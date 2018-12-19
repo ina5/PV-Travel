@@ -1,8 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { User } from './user.entity';
+import { UserEntity } from './user.entity';
 
 @Entity('roles')
-export class Role {
+export class RoleEntity {
     @PrimaryGeneratedColumn('uuid')
     id: number;
 
@@ -10,6 +10,6 @@ export class Role {
         length: 100,
     })
     name: string;
-    users: Promise<User[]>;
+    users?: Promise<UserEntity[]>;
     eager: true;
 }
