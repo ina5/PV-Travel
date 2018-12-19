@@ -7,7 +7,7 @@ export class HolidaysController {
   constructor(private readonly holidaysService: HolidaysService) {}
   @HttpCode(201)
     @Post('create')
-    create(@Body(new ValidationPipe({
+    async create(@Body(new ValidationPipe({
         whitelist: true,
         transform: true,
     })) createHolidayDTO: CreateHolidayDTO) {
@@ -18,8 +18,8 @@ export class HolidaysController {
                 error: 'Holiday is not valid',
             }, 403);
         }
-        this.holidaysService.create(createHolidayDTO);
-        return 'Holiday was created!';
+        const holiday = await this.holidaysService.create(createHolidayDTO);
+        return holiday;
     }
     @HttpCode(200)
     @Get()

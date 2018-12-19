@@ -1,7 +1,6 @@
 import { IsString, Length, IsNumber, IsDateString } from 'class-validator';
 
 export class CreateHolidayDTO {
-  @IsString() readonly id: string;
   @IsString()
   @Length(3, 30) readonly title: string;
   @IsString()

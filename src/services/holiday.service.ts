@@ -16,14 +16,17 @@ export class HolidaysService {
 
     async create(dto: CreateHolidayDTO): Promise<HolidayEntity> {
 
-      const {id, title, startDate, endDate, price, description, location} = dto;
-      const qb = await getRepository(HolidayEntity)
-      .createQueryBuilder('holidays')
-      .where('holidays.title = :title', { title });
+      const { title, startDate, endDate, price, description, location} = dto;
+      // const qb = await getRepository(HolidayEntity)
+      // .createQueryBuilder('holidays')
+      // .where('holidays.title = :title', { title });
 
-      const holiday = await qb.getOne();
+      // const holiday = await qb.getOne();
+
+      const holiday = await this.holidayRepository.findOne({where: {title}});
 
       if (holiday) {
+        console.log(holiday);
         const otheEerrors = {title: 'Title must be unique'};
         throw new HttpException({message: 'Input data validation failed', otheEerrors}, HttpStatus.BAD_REQUEST);
       }
