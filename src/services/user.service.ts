@@ -1,14 +1,13 @@
 import { GetUserDTO } from './../dto/get-user.dto';
 import { UserEntity } from 'src/data-base/entity/user.entity';
-import { Injectable, HttpStatus } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
+import { Injectable, HttpStatus } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LoginUserDTO } from 'src/dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from 'src/interfaces/jwt.interface';
 import { CreateUserDTO } from 'src/dto/create-user.dto';
 import { IsEmpty } from 'class-validator';
-
 
 @Injectable()
 export class UsersService {
@@ -33,7 +32,6 @@ export class UsersService {
         return userFound;
     }
     async registerUser(user: CreateUserDTO) {
-    
         const userFoundByEmail = await this.userRepository.findOne({ where: { email: user.email } });
         const userFoundByUsername = await this.userRepository.findOne({ where: { username: user.username } });
 
