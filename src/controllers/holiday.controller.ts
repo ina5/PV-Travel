@@ -1,13 +1,13 @@
-import { HolidaysService } from './holiday.service';
+import { HolidaysService } from '../services/holiday.service';
 import { Controller, HttpCode, Post, Body, ValidationPipe, HttpException, HttpStatus, Get, Param, Delete } from '@nestjs/common';
-import { CreateHolidayDTO } from './dto/create-holiday.dto';
+import { CreateHolidayDTO } from '../holidays/dto/create-holiday.dto';
 
 @Controller('holidays')
 export class HolidaysController {
   constructor(private readonly holidaysService: HolidaysService) {}
   @HttpCode(201)
     @Post('create')
-    create(@Body(new ValidationPipe({
+    async create(@Body(new ValidationPipe({
         whitelist: true,
         transform: true,
     })) createHolidayDTO: CreateHolidayDTO) {
@@ -18,8 +18,8 @@ export class HolidaysController {
                 error: 'Holiday is not valid',
             }, 403);
         }
-        this.holidaysService.create(createHolidayDTO);
-        return 'Holiday was created!';
+        const holiday = await this.holidaysService.create(createHolidayDTO);
+        return holiday;
     }
     @HttpCode(200)
     @Get()

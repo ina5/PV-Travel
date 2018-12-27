@@ -3,7 +3,7 @@ import { User } from './user.entity';
 import { Location } from './location.entity';
 
 @Entity('holidays')
-export class Holiday {
+export class HolidayEntity {
     @PrimaryGeneratedColumn('uuid')
     id: number;
 
@@ -24,8 +24,8 @@ export class Holiday {
         cascade: ['insert'],
     })
     @JoinTable()
-    users: Promise<User[]>;
+    users?: Promise<User[]>;
     @ManyToOne(type => Location, location => location.holidays)
-    location: Location;
-    eager: true;
+    location?: Location;
+    eager?: true;
 }

@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, ManyToOne } from 'typeorm';
-import { Holiday } from './holiday.entity';
+import { HolidayEntity } from './holiday.entity';
 import { Role } from './role.entity';
 
 @Entity('users')
@@ -30,8 +30,8 @@ export class User {
     })
     email: string;
 
-    @ManyToMany(type => Holiday, holiday => holiday.users, { cascade: ['insert'] })
-    holidays?: Promise<Holiday[]>;
+    @ManyToMany(type => HolidayEntity, holiday => holiday.users, { cascade: ['insert'] })
+    holidays?: Promise<HolidayEntity[]>;
     @ManyToOne(type => Role, role => role.users)
     role: string;
 }
