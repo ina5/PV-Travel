@@ -36,9 +36,9 @@ export class ConfigService {
             JWT_EXPIRE: Joi.number().default(3600 * 24 * 7),
             DB_TYPE: Joi.string().default('mysql'),
             DB_HOST: Joi.string().default('localhost'),
-            DB_PORT: Joi.number().default(5005),
-            DB_USERNAME: Joi.string().default('root'),
-            DB_PASSWORD: Joi.string().default('ina'),
+            DB_PORT: Joi.number().required(),
+            DB_USERNAME: Joi.string().required(),
+            DB_PASSWORD: Joi.string().required(),
             DB_DATABASE_NAME: Joi.string().required(),
         });
 

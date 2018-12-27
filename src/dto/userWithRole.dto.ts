@@ -1,7 +1,7 @@
+import { Length, IsString, IsEmail } from 'class-validator';
+import { RoleEntity } from 'src/data-base/entity';
 
-import { IsString, IsInt, Length, IsEmail, IsNumber } from 'class-validator';
-
-export class CreateUserDTO {
+export class CreateUserWithRoleDTO {
     @Length(3, 100)
     @IsString() firstName: string;
     @Length(3, 100)
@@ -10,5 +10,5 @@ export class CreateUserDTO {
     @IsString() username: string;
     @IsString() password: string;
     @IsEmail() email: string;
-
+    role: RoleEntity;
 }

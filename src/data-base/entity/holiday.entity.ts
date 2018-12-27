@@ -21,11 +21,13 @@ export class HolidayEntity {
     @Column('text')
     description: string;
     @ManyToMany(type => UserEntity, user => user.holidays, {
-        cascade: ['insert'],
+        eager: true,
     })
     @JoinTable()
-    users?: Promise<UserEntity[]>;
-    @ManyToOne(type => LocationEntity, location => location.holidays)
-    location?: LocationEntity;
-    eager: true;
+    users: Promise<UserEntity[]>;
+    @ManyToOne(type => LocationEntity, location => location.holidays, {
+        eager: true,
+    })
+    location: LocationEntity;
+
 }

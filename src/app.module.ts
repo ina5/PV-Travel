@@ -1,5 +1,5 @@
 
-import { HolidayModule } from './holidays/holiday.module';
+import { HolidayModule } from './modules/holiday.module';
 import { Module, HttpModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';

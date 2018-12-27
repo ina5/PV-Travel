@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, ManyToOne, JoinTable } from 'typeorm';
 import { HolidayEntity } from './holiday.entity';
 import { RoleEntity } from './role.entity';
 
@@ -16,6 +16,7 @@ export class UserEntity {
     lastName: string;
     @Column({
         length: 100,
+        nullable: true,
     })
     username: string;
     @Column({
@@ -25,12 +26,15 @@ export class UserEntity {
     password: string;
     @Column({
         length: 100,
-
     })
     email: string;
 
-    @ManyToMany(type => HolidayEntity, holiday => holiday.users, { cascade: ['insert'] })
-    holidays?: Promise<HolidayEntity[]>;
-    @ManyToOne(type => RoleEntity, role => role.users)
-    role?: string;
+    @ManyToMany(type => HolidayEntity, holiday => holiday.users)
+    holidays: Promise<HolidayEntity[]>;
+    // holidays: Promise<HolidayEntity[]>;
+    @ManyToOne(type => RoleEntity, role => role.users, {
+        eager: true,
+    })
+    role: RoleEntity;
+
 }
