@@ -1,3 +1,4 @@
+import { CreateLocationDTO } from './../dto/create-location.dto';
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HolidayEntity, LocationEntity } from 'src/data-base/entity';
@@ -12,18 +13,34 @@ export class HolidaysService {
         @InjectRepository(LocationEntity) private readonly locationRepository: Repository<LocationEntity>) { }
 
     async create(holiday: CreateHolidayDTO) {
+
         const holidayFoundByTitle = await this.holidayRepository.findOne({ where: { title: holiday.title } });
         if (holidayFoundByTitle) {
             return HttpStatus.CONFLICT;
         }
+        const holidayEntity = new HolidayEntity();
+        holidayEntity.title = holiday.title;
+        holidayEntity.startDate = new Date(holiday.startDate);
+        holidayEntity.endDate = new Date(holiday.endDate);
+        holidayEntity.price = holiday.price;
+        holidayEntity.description = holiday.description;
+
         const foundLocation = await this.locationRepository.findOne({ where: { name: holiday.location } });
         if (foundLocation) {
             holiday.location = foundLocation;
-            await this.holidayRepository.create(holiday);
-            await this.holidayRepository.save([holiday]);
-            return HttpStatus.CREATED;
+            holidayEntity.location = holiday.location;
         }
-        return HttpStatus.NOT_FOUND;
+        else {
+            const location = new LocationEntity();
+            location.name = holiday.location.toString();
+            await this.locationRepository.create(location);
+            await this.locationRepository.save([location]);
+            holidayEntity.location = location;
+        }
+
+        await this.holidayRepository.create(holidayEntity);
+        await this.holidayRepository.save([holidayEntity]);
+        return HttpStatus.CREATED;
 
     }
 
