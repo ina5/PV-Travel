@@ -37,7 +37,7 @@ export class ConfigService {
             DB_TYPE: Joi.string().default('mysql'),
             DB_HOST: Joi.string().default('localhost'),
             DB_PORT: Joi.number().required(),
-            DB_USERNAME: Joi.string().default('root'),
+            DB_USERNAME: Joi.string().required(),
             DB_PASSWORD: Joi.string().required(),
             DB_DATABASE_NAME: Joi.string().required(),
         });
