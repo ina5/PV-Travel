@@ -38,19 +38,15 @@ export class UsersService {
         console.log(user);
         // Check if user is already exist (by Email and Username)
         const userFoundByEmail = await this.userRepository.findOne({ where: { email: user.email } });
-        console.log(userFoundByEmail);
         const userFoundByUsername = await this.userRepository.findOne({ where: { username: user.username } });
-        console.log(userFoundByUsername);
         if (userFoundByEmail || userFoundByUsername) {
             return HttpStatus.CONFLICT;
         }
         // Get UserRole from DataBase or create it if does not exist
         const roleUser = (await this.roleRepository.findOne({ where: { name: 'user' } }));
-        console.log(roleUser);
         if (roleUser === undefined) {
             const roleEntityUser = new RoleEntity();
             roleEntityUser.name = 'user';
-            console.log(roleEntityUser);
             await this.roleRepository.create(roleEntityUser);
             await this.roleRepository.save([roleEntityUser]);
             const roleEntityAdmin = new RoleEntity();
@@ -61,7 +57,6 @@ export class UsersService {
         user.password = await bcrypt.hash(user.password, 10);
         const foundRoleUser = (await this.roleRepository.findOne({ where: { name: 'user' } }));
         const userEntity = new UserEntity();
-        console.log(userEntity);
         userEntity.firstName = user.firstName;
         userEntity.lastName = user.lastName;
         userEntity.username = user.username;
@@ -86,13 +81,10 @@ export class UsersService {
     }
     async findByCriteria(query) {
         const searchCriteria1 = Object.keys(query)[0];
-        const searchCriteria2 = Object.keys(query)[1];
+        // const searchCriteria2 = Object.keys(query)[1];
         const searchValue1 = query[searchCriteria1];
-        const searchValue2 = query[searchCriteria2];
-        // console.log(searchCriteria1.concat(searchCriteria2));
-        // console.log(searchValue1.concat(searchValue2));
-        //        const foundUser = await this.userRepository.findOneOrFail({ searchCriteria1: searchValue1 });
-        const foundUser = await this.userRepository.find({ where: { username: searchValue1, email: searchValue2 } });
+        // const searchValue2 = query[searchCriteria2];
+        const foundUser = await this.userRepository.find({ where: { username: searchValue1} });
         if (foundUser) {
             return foundUser;
         }

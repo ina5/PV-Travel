@@ -60,4 +60,19 @@ export class HolidaysService {
     async remove(id) {
         await this.holidayRepository.delete(id);
     }
+    async findByCriteria(query) {
+        const searchCriteria1 = Object.keys(query)[0];
+        const searchCriteria2 = Object.keys(query)[1];
+        const searchValue1 = query[searchCriteria1];
+        const searchValue2 = query[searchCriteria2];
+
+        const foundIdLocation = (await this.locationRepository.findOne({ where: { name: searchValue1 } })).id;
+
+        const foundHoliday = await this.holidayRepository.find({ where: { locationId: foundIdLocation, price: searchValue2 } });
+        if (foundHoliday) {
+            return foundHoliday;
+        }
+        return HttpStatus.NOT_FOUND;
+
+    }
 }

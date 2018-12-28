@@ -1,5 +1,5 @@
 
-import { Controller, HttpCode, Post, Body, ValidationPipe, HttpException, HttpStatus, Get, Param, Delete } from '@nestjs/common';
+import { Controller, HttpCode, Post, Body, ValidationPipe, HttpException, HttpStatus, Get, Param, Delete, Query } from '@nestjs/common';
 import { CreateHolidayDTO } from 'src/dto/create-holiday.dto';
 import { HolidaysService } from 'src/services/holiday.service';
 
@@ -24,11 +24,11 @@ export class HolidaysController {
     }
     @HttpCode(200)
     @Get()
-    findAll() {
-        if (this.holidaysService) {
+    get(@Query() params) {
+        if (Object.getOwnPropertyNames(params).length === 0) {
             return this.holidaysService.findAll();
         }
-        return HttpStatus.NOT_FOUND;
+        return this.holidaysService.findByCriteria(params);
     }
     @HttpCode(200)
     @Get(':id')
