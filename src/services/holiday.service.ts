@@ -1,4 +1,3 @@
-import { CreateLocationDTO } from './../dto/create-location.dto';
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HolidayEntity, LocationEntity } from 'src/data-base/entity';

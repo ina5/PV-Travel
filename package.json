@@ -19,7 +19,6 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migration:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate",
     "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run"
-
   },
   "dependencies": {
     "@nestjs/common": "^5.4.0",

@@ -1,9 +1,8 @@
 import { UsersService } from 'src/services/user.service';
-
-import { Controller, Post, Body, ValidationPipe, BadRequestException, HttpStatus, HttpException } from '@nestjs/common';
-import { AuthService } from 'src/auth/auth.service';
-import { LoginUserDTO } from 'src/dto/login-user.dto';
-import { CreateUserDTO } from 'src/dto/create-user.dto';
+import { CreateUserDTO } from './../dto/create-user.dto';
+import { AuthService } from '../auth/auth.service';
+import { LoginUserDTO } from '../dto/login-user.dto';
+import { Controller, Post, Body, ValidationPipe, BadRequestException, HttpStatus, Get, HttpException } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController {

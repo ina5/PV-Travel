@@ -1,5 +1,6 @@
-import { HolidayEntity, RoleEntity } from 'src/data-base/entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, ManyToOne, JoinTable } from 'typeorm';
+import { HolidayEntity } from './holiday.entity';
+import { RoleEntity } from './role.entity';
 
 @Entity('users')
 export class UserEntity {

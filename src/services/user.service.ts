@@ -1,4 +1,3 @@
-import { CreateUserDTO } from './../dto/create-user.dto';
 import { GetUserDTO } from './../dto/get-user.dto';
 import { UserEntity } from 'src/data-base/entity/user.entity';
 import { Injectable, HttpStatus } from '@nestjs/common';
@@ -8,6 +7,8 @@ import { LoginUserDTO } from 'src/dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from 'src/interfaces/jwt.interface';
 import { RoleEntity } from 'src/data-base/entity';
+import { CreateUserDTO } from 'src/dto/create-user.dto';
+
 @Injectable()
 export class UsersService {
     constructor(@InjectRepository(UserEntity)
@@ -34,28 +35,33 @@ export class UsersService {
         return userFound;
     }
     async registerUser(user: CreateUserDTO) {
+        console.log(user);
         // Check if user is already exist (by Email and Username)
         const userFoundByEmail = await this.userRepository.findOne({ where: { email: user.email } });
+        console.log(userFoundByEmail);
         const userFoundByUsername = await this.userRepository.findOne({ where: { username: user.username } });
-
+        console.log(userFoundByUsername);
         if (userFoundByEmail || userFoundByUsername) {
             return HttpStatus.CONFLICT;
         }
         // Get UserRole from DataBase or create it if does not exist
         const roleUser = (await this.roleRepository.findOne({ where: { name: 'user' } }));
-        if (!roleUser) {
+        console.log(roleUser);
+        if (roleUser === undefined) {
             const roleEntityUser = new RoleEntity();
             roleEntityUser.name = 'user';
-            await this.userRepository.create(roleEntityUser);
-            await this.userRepository.save([roleEntityUser]);
+            console.log(roleEntityUser);
+            await this.roleRepository.create(roleEntityUser);
+            await this.roleRepository.save([roleEntityUser]);
             const roleEntityAdmin = new RoleEntity();
             roleEntityAdmin.name = 'admin';
-            await this.userRepository.create(roleEntityAdmin);
-            await this.userRepository.save([roleEntityAdmin]);
+            await this.roleRepository.create(roleEntityAdmin);
+            await this.roleRepository.save([roleEntityAdmin]);
         }
         user.password = await bcrypt.hash(user.password, 10);
         const foundRoleUser = (await this.roleRepository.findOne({ where: { name: 'user' } }));
         const userEntity = new UserEntity();
+        console.log(userEntity);
         userEntity.firstName = user.firstName;
         userEntity.lastName = user.lastName;
         userEntity.username = user.username;
