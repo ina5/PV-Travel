@@ -1,6 +1,7 @@
-import { HolidaysService } from '../services/holiday.service';
+
 import { Controller, HttpCode, Post, Body, ValidationPipe, HttpException, HttpStatus, Get, Param, Delete } from '@nestjs/common';
 import { CreateHolidayDTO } from 'src/dto/create-holiday.dto';
+import { HolidaysService } from 'src/services/holiday.service';
 @Controller('holidays')
 export class HolidaysController {
   constructor(private readonly holidaysService: HolidaysService) {}

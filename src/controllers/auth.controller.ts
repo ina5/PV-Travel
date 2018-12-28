@@ -1,10 +1,10 @@
-import { CreateUserWithRoleDTO } from 'src/dto/userWithRole.dto';
 import { UsersService } from 'src/services/user.service';
-import { CreateUserDTO } from './../dto/create-user.dto';
-import { AuthService } from '../auth/auth.service';
-import { LoginUserDTO } from '../dto/login-user.dto';
-import { Controller, Post, Body, ValidationPipe, BadRequestException, HttpStatus, Get } from '@nestjs/common';
-import { RoleEntity } from 'src/data-base/entity';
+
+import { Controller, Post, Body, ValidationPipe, BadRequestException, HttpStatus, HttpException } from '@nestjs/common';
+import { AuthService } from 'src/auth/auth.service';
+import { LoginUserDTO } from 'src/dto/login-user.dto';
+import { CreateUserDTO } from 'src/dto/create-user.dto';
+
 @Controller('auth')
 export class AuthController {
     constructor(
@@ -30,24 +30,15 @@ export class AuthController {
             transform: true,
             whitelist: true,
         }))
-        user: CreateUserDTO,
-    ): Promise<any> {
-        try {
-            const userWithRole = new CreateUserWithRoleDTO();
-            userWithRole.firstName = user.firstName;
-            userWithRole.lastName = user.lastName;
-            userWithRole.email = user.email;
-            userWithRole.username = user.username;
-            userWithRole.password = user.password;
-            userWithRole.role = null;
-            await this.userService.registerUser(userWithRole);
-            return HttpStatus.CREATED;
-        } catch (error) {
-            await new Promise((resolve, reject) => {
-                resolve();
-            });
-
-            return (error.message);
+        createUser: CreateUserDTO,
+    ) {
+        if (Object.keys(createUser).length === 0) {
+            throw new HttpException({
+                status: HttpStatus.FORBIDDEN,
+                error: 'User is not valid',
+            }, 403);
         }
+        const user = await this.userService.registerUser(createUser);
+        return user;
     }
 }

@@ -1,7 +1,8 @@
-import { UsersService } from '../services/user.service';
-import { Controller, Get, Post, HttpCode, Param, Delete, UseGuards, Query } from '@nestjs/common';
+
+import { Controller, Get, HttpCode, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { UsersService } from 'src/services/user.service';
 
 @Controller('users')
 export class UsersController {
