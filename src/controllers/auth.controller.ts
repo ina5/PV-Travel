@@ -18,7 +18,7 @@ export class AuthController {
     })) user: LoginUserDTO): Promise<string> {
         const token = await this.authService.signIn(user);
         if (!token) {
-            throw new BadRequestException('Wrong');
+            throw new BadRequestException('Wrong credentials');
         }
         return token;
     }

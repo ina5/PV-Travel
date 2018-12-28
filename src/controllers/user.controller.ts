@@ -2,6 +2,7 @@ import { UsersService } from '../services/user.service';
 import { Controller, Get, Post, HttpCode, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { Roles } from 'src/common/decorators/roles.decorator';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UsersController {
@@ -9,6 +10,7 @@ export class UsersController {
 
     @HttpCode(200)
     @Get()
+    @UseGuards(AuthGuard())
     // @Roles('admin')
     // @UseGuards(RolesGuard)
     get(@Query() params) {
@@ -19,6 +21,7 @@ export class UsersController {
     }
     @HttpCode(200)
     @Get(':id')
+    @UseGuards(AuthGuard('jwt'))
     // @Roles('admin')
     // @UseGuards(RolesGuard)
     findOne(@Param('id') id: number) {
@@ -27,6 +30,7 @@ export class UsersController {
 
     @HttpCode(200)
     @Delete(':id')
+    @UseGuards(AuthGuard('jwt'))
     // @Roles('admin')
     // @UseGuards(RolesGuard)
     remove(@Param('id') id) {

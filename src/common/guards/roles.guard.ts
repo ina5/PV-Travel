@@ -5,16 +5,20 @@ import { Reflector } from '@nestjs/core';
 @Injectable()
 export class RolesGuard implements CanActivate {
     constructor(private readonly reflector: Reflector) { }
-    canActivate(
-        context: ExecutionContext,
-    ): boolean | Promise<boolean> | Observable<boolean> {
+
+    canActivate(context: ExecutionContext): boolean {
         const roles = this.reflector.get<string[]>('roles', context.getHandler());
+        console.log(roles);
         if (!roles) {
             return true;
         }
-        else {
+        const request = context.switchToHttp().getRequest();
+        console.log(request);
+        const user = request.user;
 
-        }
-        return false;
+        console.log(user);
+
+        const hasRole = () => user.roles.some((role) => roles.includes(role));
+        return user && user.roles && hasRole();
     }
 }
