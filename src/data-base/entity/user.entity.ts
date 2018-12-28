@@ -12,11 +12,11 @@ export class UserEntity {
     firstName: string;
     @Column({
         length: 100,
+        nullable: true,
     })
     lastName: string;
     @Column({
         length: 100,
-        nullable: true,
     })
     username: string;
     @Column({

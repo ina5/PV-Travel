@@ -35,7 +35,6 @@ export class UsersService {
         return userFound;
     }
     async registerUser(user: CreateUserDTO) {
-        console.log(user);
         // Check if user is already exist (by Email and Username)
         const userFoundByEmail = await this.userRepository.findOne({ where: { email: user.email } });
         const userFoundByUsername = await this.userRepository.findOne({ where: { username: user.username } });
@@ -43,6 +42,8 @@ export class UsersService {
             return HttpStatus.CONFLICT;
         }
         // Get UserRole from DataBase or create it if does not exist
+
+        // NEED TO BE FIX
         const roleUser = (await this.roleRepository.findOne({ where: { name: 'user' } }));
         if (roleUser === undefined) {
             const roleEntityUser = new RoleEntity();
@@ -53,6 +54,15 @@ export class UsersService {
             roleEntityAdmin.name = 'admin';
             await this.roleRepository.create(roleEntityAdmin);
             await this.roleRepository.save([roleEntityAdmin]);
+
+            const userAdmin = new UserEntity();
+            userAdmin.firstName = 'admin';
+            userAdmin.username = 'admin';
+            userAdmin.password = '123';
+            userAdmin.email = 'admin@admin.com';
+            userAdmin.role = (await this.roleRepository.findOne({ where: { name: 'admin' } }));
+            await this.userRepository.create(userAdmin);
+            await this.userRepository.save([userAdmin]);
         }
         user.password = await bcrypt.hash(user.password, 10);
         const foundRoleUser = (await this.roleRepository.findOne({ where: { name: 'user' } }));
@@ -84,7 +94,7 @@ export class UsersService {
         // const searchCriteria2 = Object.keys(query)[1];
         const searchValue1 = query[searchCriteria1];
         // const searchValue2 = query[searchCriteria2];
-        const foundUser = await this.userRepository.find({ where: { username: searchValue1} });
+        const foundUser = await this.userRepository.find({ where: { username: searchValue1 } });
         if (foundUser) {
             return foundUser;
         }
