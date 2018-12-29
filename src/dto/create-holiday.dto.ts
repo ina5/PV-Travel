@@ -1,5 +1,6 @@
 import { LocationEntity } from './../data-base/entity/location.entity';
 import { IsString, Length, IsNumber, IsDateString } from 'class-validator';
+import { Optional } from '@nestjs/common';
 
 export class CreateHolidayDTO {
   @IsString()
@@ -8,6 +9,9 @@ export class CreateHolidayDTO {
   @Length(2, 20) location: LocationEntity;
   @IsDateString() readonly startDate: string;
   @IsDateString() readonly endDate: string;
-  @IsNumber() readonly price: number;
+  @IsString() readonly price: string;
   @IsString() readonly description: string;
+
+  @Optional()
+  pictureUrl: string;
 }
