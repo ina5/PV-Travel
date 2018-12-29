@@ -42,6 +42,7 @@ export class HolidaysController {
             createHolidayDTO.pictureUrl = join(folder, file.filename);
         }
         try {
+            console.log(createHolidayDTO);
             await this.holidaysService.create(createHolidayDTO);
             return 'Holiday was created';
         } catch (error) {

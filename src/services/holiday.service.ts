@@ -25,7 +25,7 @@ export class HolidaysService {
         holidayEntity.endDate = new Date(holiday.endDate);
         holidayEntity.price = +holiday.price;
         holidayEntity.description = holiday.description;
-        holidayEntity.pictureUrl = '';
+        holidayEntity.pictureUrl = holiday.pictureUrl;
 
         // Check if location is already added into DataBase
         const foundLocation = await this.locationRepository.findOne({ where: { name: holiday.location } });
