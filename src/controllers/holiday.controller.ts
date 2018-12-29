@@ -14,7 +14,7 @@ export class HolidaysController {
     constructor(private readonly holidaysService: HolidaysService) { }
     @HttpCode(201)
     @Post('create')
-    // @UseGuards(AuthGuard('jwt'), AdminGuard)
+    @UseGuards(AuthGuard('jwt'), AdminGuard)
     @UseInterceptors(FileInterceptor('picture', {
         limits: FileService.fileLimit(1, 2 * 1024 * 1024),
         storage: FileService.storage(['public', 'images']),
