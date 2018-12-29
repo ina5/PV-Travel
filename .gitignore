@@ -37,4 +37,8 @@ dist/
 # Serverless directories
 .serverless
 
+#
+public/
+
+#
 ormconfig.json
