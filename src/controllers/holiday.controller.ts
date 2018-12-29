@@ -1,13 +1,16 @@
 
-import { Controller, HttpCode, Post, Body, ValidationPipe, HttpException, HttpStatus, Get, Param, Delete, Query } from '@nestjs/common';
+import { Controller, HttpCode, Post, Body, ValidationPipe, HttpException, HttpStatus, Get, Param, Delete, Query, UseGuards } from '@nestjs/common';
 import { CreateHolidayDTO } from 'src/dto/create-holiday.dto';
 import { HolidaysService } from 'src/services/holiday.service';
+import { AuthGuard } from '@nestjs/passport';
+import { AdminGuard } from 'src/common/guards/admin.guard';
 
 @Controller('holidays')
 export class HolidaysController {
     constructor(private readonly holidaysService: HolidaysService) { }
     @HttpCode(201)
     @Post('create')
+    @UseGuards(AuthGuard('jwt'), AdminGuard)
     async create(@Body(new ValidationPipe({
         whitelist: true,
         transform: true,
@@ -24,6 +27,7 @@ export class HolidaysController {
     }
     @HttpCode(200)
     @Get()
+    @UseGuards(AuthGuard('jwt'))
     get(@Query() params) {
         if (Object.getOwnPropertyNames(params).length === 0) {
             return this.holidaysService.findAll();
@@ -32,11 +36,13 @@ export class HolidaysController {
     }
     @HttpCode(200)
     @Get(':id')
+    @UseGuards(AuthGuard('jwt'))
     findOne(@Param('id') id) {
         return this.holidaysService.findOne(id);
     }
     @HttpCode(200)
     @Delete(':id')
+    @UseGuards(AuthGuard('jwt'))
     remove(@Param('id') id) {
         return this.holidaysService.remove(id);
     }

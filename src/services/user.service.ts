@@ -58,7 +58,7 @@ export class UsersService {
             const userAdmin = new UserEntity();
             userAdmin.firstName = 'admin';
             userAdmin.username = 'admin';
-            userAdmin.password = '123';
+            userAdmin.password = await bcrypt.hash('123', 10);
             userAdmin.email = 'admin@admin.com';
             userAdmin.role = (await this.roleRepository.findOne({ where: { name: 'admin' } }));
             await this.userRepository.create(userAdmin);
