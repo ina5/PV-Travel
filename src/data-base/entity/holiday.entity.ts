@@ -20,6 +20,11 @@ export class HolidayEntity {
     price: number;
     @Column('text')
     description: string;
+    @Column({
+        nullable: true,
+    })
+    pictureUrl: string;
+
     @ManyToMany(type => UserEntity, user => user.holidays, {
         eager: true,
     })

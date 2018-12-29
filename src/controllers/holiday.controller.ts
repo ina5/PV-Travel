@@ -27,7 +27,7 @@ export class HolidaysController {
     }
     @HttpCode(200)
     @Get()
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'), AdminGuard)
     get(@Query() params) {
         if (Object.getOwnPropertyNames(params).length === 0) {
             return this.holidaysService.findAll();
@@ -36,14 +36,25 @@ export class HolidaysController {
     }
     @HttpCode(200)
     @Get(':id')
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'), AdminGuard)
     findOne(@Param('id') id) {
         return this.holidaysService.findOne(id);
     }
     @HttpCode(200)
     @Delete(':id')
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'), AdminGuard)
     remove(@Param('id') id) {
         return this.holidaysService.remove(id);
+    }
+    @HttpCode(200)
+    @Post('update/:id')
+    @UseGuards(AuthGuard('jwt'), AdminGuard)
+    update(@Body(new ValidationPipe({
+        whitelist: true,
+        transform: true,
+    })) createHolidayDTO: CreateHolidayDTO,
+        // tslint:disable-next-line:align
+        @Param('id') id) {
+        return this.holidaysService.update(id, createHolidayDTO);
     }
 }

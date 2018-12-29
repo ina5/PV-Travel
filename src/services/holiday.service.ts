@@ -75,4 +75,31 @@ export class HolidaysService {
         return HttpStatus.NOT_FOUND;
 
     }
+    async update(idHoliday, createHolidayDTO) {
+        const foundHolidayById = await this.holidayRepository.findOne({ where: { id: idHoliday } });
+        if (foundHolidayById) {
+            foundHolidayById.title = createHolidayDTO.title;
+            foundHolidayById.startDate = createHolidayDTO.startDate;
+            foundHolidayById.endDate = createHolidayDTO.endDate;
+            foundHolidayById.price = createHolidayDTO.price;
+            foundHolidayById.description = createHolidayDTO.description;
+
+            // Check if location is already added into DataBase
+            const foundLocation = await this.locationRepository.findOne({ where: { name: createHolidayDTO.location } });
+            if (foundLocation) {
+                foundHolidayById.location = foundLocation;
+            }
+            else {
+                // Create location and save it into DataBase
+                const location = new LocationEntity();
+                location.name = createHolidayDTO.location.toString();
+                await this.locationRepository.create(location);
+                await this.locationRepository.save([location]);
+                foundHolidayById.location = location;
+            }
+            await this.holidayRepository.update(idHoliday, foundHolidayById);
+            return HttpStatus.OK;
+        }
+        return HttpStatus.NOT_FOUND;
+    }
 }
