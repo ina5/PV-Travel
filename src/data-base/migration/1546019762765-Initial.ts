@@ -1,12 +1,12 @@
-import {MigrationInterface, QueryRunner} from 'typeorm';
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class Initial1546019762765 implements MigrationInterface {
+export class Initial1546104639103 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.query('CREATE TABLE `roles` (`id` varchar(255) NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB');
         await queryRunner.query('CREATE TABLE `users` (`id` varchar(255) NOT NULL, `firstName` varchar(100) NOT NULL, `lastName` varchar(100) NULL, `username` varchar(100) NOT NULL, `password` varchar(100) NOT NULL, `email` varchar(100) NOT NULL, `roleId` varchar(255) NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB');
         await queryRunner.query('CREATE TABLE `locations` (`id` varchar(255) NOT NULL, `name` varchar(100) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB');
-        await queryRunner.query('CREATE TABLE `holidays` (`id` varchar(255) NOT NULL, `title` varchar(100) NOT NULL, `startDate` datetime NOT NULL, `endDate` datetime NOT NULL, `price` double NOT NULL, `description` text NOT NULL, `locationId` varchar(255) NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB');
+        await queryRunner.query('CREATE TABLE `holidays` (`id` varchar(255) NOT NULL, `title` varchar(100) NOT NULL, `startDate` datetime NOT NULL, `endDate` datetime NOT NULL, `price` double NOT NULL, `description` text NOT NULL, `pictureUrl` varchar(255) NULL, `locationId` varchar(255) NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB');
         await queryRunner.query('CREATE TABLE `holidays_users_users` (`holidaysId` varchar(255) NOT NULL, `usersId` varchar(255) NOT NULL, PRIMARY KEY (`holidaysId`, `usersId`)) ENGINE=InnoDB');
         await queryRunner.query('ALTER TABLE `users` ADD CONSTRAINT `FK_368e146b785b574f42ae9e53d5e` FOREIGN KEY (`roleId`) REFERENCES `roles`(`id`)');
         await queryRunner.query('ALTER TABLE `holidays` ADD CONSTRAINT `FK_54657bf16bf4f2746b64aa78e78` FOREIGN KEY (`locationId`) REFERENCES `locations`(`id`)');

@@ -29,5 +29,8 @@ export class HolidayEntity {
         eager: true,
     })
     location: LocationEntity;
-
+    @Column({
+        nullable: true,
+    })
+    pictureUrl: string;
 }
