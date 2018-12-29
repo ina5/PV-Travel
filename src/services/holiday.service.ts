@@ -28,25 +28,13 @@ export class HolidaysService {
 
         // Check if location is already added into DataBase
         const foundLocation = await this.locationRepository.findOne({ where: { name: holiday.location } });
-        if (foundLocation) {
-            holiday.location = foundLocation;
-            holidayEntity.location = holiday.location;
-        }
-        else {
-            // Create location and save it into DataBase
-            const location = new LocationEntity();
-            location.name = holiday.location.toString();
-            await this.locationRepository.create(location);
-            await this.locationRepository.save([location]);
-            holidayEntity.location = location;
-        }
+        await this.checkForLocation(foundLocation, holiday, holidayEntity);
         // Save holiday into DataBase
         await this.holidayRepository.create(holidayEntity);
         await this.holidayRepository.save([holidayEntity]);
         return HttpStatus.CREATED;
 
     }
-
     async  findAll(): Promise<HolidayEntity[]> {
         return await this.holidayRepository.find();
     }
@@ -86,20 +74,25 @@ export class HolidaysService {
 
             // Check if location is already added into DataBase
             const foundLocation = await this.locationRepository.findOne({ where: { name: createHolidayDTO.location } });
-            if (foundLocation) {
-                foundHolidayById.location = foundLocation;
-            }
-            else {
-                // Create location and save it into DataBase
-                const location = new LocationEntity();
-                location.name = createHolidayDTO.location.toString();
-                await this.locationRepository.create(location);
-                await this.locationRepository.save([location]);
-                foundHolidayById.location = location;
-            }
+            await this.checkForLocation(foundLocation, createHolidayDTO, foundHolidayById);
             await this.holidayRepository.update(idHoliday, foundHolidayById);
             return HttpStatus.OK;
         }
         return HttpStatus.NOT_FOUND;
     }
+    private async checkForLocation(foundLocation: LocationEntity, holiday: CreateHolidayDTO, holidayEntity: HolidayEntity) {
+        if (foundLocation) {
+            holiday.location = foundLocation;
+            holidayEntity.location = holiday.location;
+        }
+        else {
+            // Create location and save it into DataBase
+            const location = new LocationEntity();
+            location.name = holiday.location.toString();
+            await this.locationRepository.create(location);
+            await this.locationRepository.save([location]);
+            holidayEntity.location = location;
+        }
+    }
+
 }
