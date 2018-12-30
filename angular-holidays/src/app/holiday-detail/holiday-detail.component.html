@@ -1,0 +1,30 @@
+<div *ngIf="holiday">
+  <h2>{{holiday.title | uppercase}} Details</h2>
+  <div><span>id: </span>{{holiday.id}}</div>
+  <div>
+    <label>title:
+      <input [(ngModel)]="holiday.title" placeholder="title">
+    </label>
+  </div>
+  <div>
+    <label>startDate:
+      <input [(ngModel)]="holiday.startDate" placeholder="startDate">
+    </label>
+  </div>
+  <div>
+    <label>endDate:
+      <input [(ngModel)]="holiday.endDate" placeholder="endDate">
+    </label>
+  </div>
+  <div>
+    <label>price:
+      <input [(ngModel)]="holiday.price" placeholder="price">
+    </label>
+  </div>
+  <div>
+    <label>description:
+      <input [(ngModel)]="holiday.description" placeholder="description">
+    </label>
+  </div>
+  <button (click)="goBack()">go back</button>
+</div>

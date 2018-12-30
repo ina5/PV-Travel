@@ -1,0 +1,8 @@
+<h3>Top Holidays</h3>
+<div class="grid grid-pad">
+  <a *ngFor="let holiday of holidays" class="col-1-4" routerLink="/detail/{{holiday.id}}">
+    <div class="module holiday">
+      <h4>{{holiday.name}}</h4>
+    </div>
+  </a>
+</div>
