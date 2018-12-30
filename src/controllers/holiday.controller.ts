@@ -1,5 +1,4 @@
-
-import { Controller, HttpCode, Post, Body, ValidationPipe, HttpException, HttpStatus, Get, Param, Delete, Query, UseGuards, UseInterceptors, FileInterceptor, UploadedFile } from '@nestjs/common';
+import { Controller, HttpCode, Post, Body, ValidationPipe, HttpException, HttpStatus, Get, Param, Delete, Query, UseGuards, UseInterceptors, FileInterceptor, UploadedFile, BadRequestException, Request } from '@nestjs/common';
 import { CreateHolidayDTO } from 'src/dto/create-holiday.dto';
 import { HolidaysService } from 'src/services/holiday.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -8,6 +7,7 @@ import { fileURLToPath } from 'url';
 import { FileService } from 'src/common/core/file.service';
 import { join } from 'path';
 import { unlink } from 'fs';
+import { BookingHolidayDTO } from 'src/dto/booking-holiday.dto';
 
 @Controller('holidays')
 export class HolidaysController {
@@ -96,4 +96,19 @@ export class HolidaysController {
         @Param('id') id) {
         return this.holidaysService.update(id, createHolidayDTO);
     }
+
+  @HttpCode(200)
+  @Post('book')
+  @UseGuards(AuthGuard('jwt'))
+  async book(@Body() body, @Request() req) {
+    if (body.holidayId === undefined) {
+      throw new BadRequestException('Wrong credentials.');
+    }
+    try {
+        return await this.holidaysService.bookHoliday(body.holidayId, req.user.id);
+      }
+      catch (error){
+        console.log(error);
+      }
+  }
 }

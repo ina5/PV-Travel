@@ -29,8 +29,10 @@ export class UserEntity {
     })
     email: string;
 
-    @ManyToMany(type => HolidayEntity, holiday => holiday.users)
-    holidays: Promise<HolidayEntity[]>;
+    @ManyToMany(type => HolidayEntity, holiday => holiday.users, {
+      eager: true,
+    })
+    holidays: HolidayEntity[];
     // holidays: Promise<HolidayEntity[]>;
     @ManyToOne(type => RoleEntity, role => role.users, {
         eager: true,

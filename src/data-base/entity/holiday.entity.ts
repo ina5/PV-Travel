@@ -25,9 +25,7 @@ export class HolidayEntity {
     })
     pictureUrl: string;
 
-    @ManyToMany(type => UserEntity, user => user.holidays, {
-        eager: true,
-    })
+    @ManyToMany(type => UserEntity, user => user.holidays)
     @JoinTable()
     users: Promise<UserEntity[]>;
     @ManyToOne(type => LocationEntity, location => location.holidays, {
