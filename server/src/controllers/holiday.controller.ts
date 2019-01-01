@@ -14,7 +14,8 @@ export class HolidaysController {
     constructor(private readonly holidaysService: HolidaysService) { }
     @HttpCode(201)
     @Post('create')
-    @UseGuards(AuthGuard('jwt'), AdminGuard)
+    // DISABLE GUARDS TO TEST ANGULAR
+    //  @UseGuards(AuthGuard('jwt'), AdminGuard)
     @UseInterceptors(FileInterceptor('picture', {
         limits: FileService.fileLimit(1, 2 * 1024 * 1024),
         storage: FileService.storage(['public', 'images']),
@@ -66,7 +67,8 @@ export class HolidaysController {
     }
     @HttpCode(200)
     @Get()
-    @UseGuards(AuthGuard('jwt'), AdminGuard)
+    // DISABLE GUARDS TO TEST ANGULAR
+    // @UseGuards(AuthGuard('jwt'), AdminGuard)
     get(@Query() params) {
         if (Object.getOwnPropertyNames(params).length === 0) {
             return this.holidaysService.findAll();
@@ -75,7 +77,8 @@ export class HolidaysController {
     }
     @HttpCode(200)
     @Get(':id')
-    @UseGuards(AuthGuard('jwt'), AdminGuard)
+    // DISABLE GUARDS TO TEST ANGULAR
+    // @UseGuards(AuthGuard('jwt'), AdminGuard)
     findOne(@Param('id') id) {
         return this.holidaysService.findOne(id);
     }
@@ -87,7 +90,8 @@ export class HolidaysController {
     }
     @HttpCode(200)
     @Post('update/:id')
-    @UseGuards(AuthGuard('jwt'), AdminGuard)
+    // DISABLE GUARDS TO TEST ANGULAR
+    //  @UseGuards(AuthGuard('jwt'), AdminGuard)
     update(@Body(new ValidationPipe({
         whitelist: true,
         transform: true,
@@ -97,18 +101,19 @@ export class HolidaysController {
         return this.holidaysService.update(id, createHolidayDTO);
     }
 
-  @HttpCode(200)
-  @Post('book')
-  @UseGuards(AuthGuard('jwt'))
-  async book(@Body() body, @Request() req) {
-    if (body.holidayId === undefined) {
-      throw new BadRequestException('Wrong credentials.');
+    @HttpCode(200)
+    @Post('book')
+    // DISABLE GUARDS TO TEST ANGULAR
+    //  @UseGuards(AuthGuard('jwt'))
+    async book(@Body() body, @Request() req) {
+        if (body.holidayId === undefined) {
+            throw new BadRequestException('Wrong credentials.');
+        }
+        try {
+            return await this.holidaysService.bookHoliday(body.holidayId, req.user.id);
+        }
+        catch (error) {
+            return error.message;
+        }
     }
-    try {
-        return await this.holidaysService.bookHoliday(body.holidayId, req.user.id);
-      }
-      catch (error){
-        console.log(error);
-      }
-  }
 }

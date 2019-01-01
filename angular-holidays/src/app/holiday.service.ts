@@ -10,6 +10,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class HolidayService {
 
   private holidaysUrl = 'http://localhost:3000/holidays';
+
   constructor(
     private http: HttpClient,
     private messageService: MessageService) { }
