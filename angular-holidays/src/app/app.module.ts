@@ -9,6 +9,8 @@ import { MessagesComponent } from './messages/messages.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { HttpClientModule } from '@angular/common/http';
     HolidayDetailComponent,
     NavbarComponent,
     MessagesComponent,
-    DashboardComponent
+    DashboardComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

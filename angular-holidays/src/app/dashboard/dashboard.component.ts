@@ -1,6 +1,7 @@
-import { HolidayService } from './../holiday.service';
+
 import { Component, OnInit } from '@angular/core';
 import { Holiday } from '../holidays/holiday';
+import { HolidayService } from '../services/holiday.service';
 
 @Component({
   selector: 'app-dashboard',

@@ -1,4 +1,4 @@
-import { HolidayService } from './../holiday.service';
+import { HolidayService } from '../services/holiday.service';
 import { Holiday } from './../holidays/holiday';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
