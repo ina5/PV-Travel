@@ -1,8 +1,10 @@
-import { UsersService } from 'src/services/user.service';
+import { LoggedInUserDTO } from './../dto/loggedInUser-dto';
+
 import { CreateUserDTO } from './../dto/create-user.dto';
 import { AuthService } from '../auth/auth.service';
 import { LoginUserDTO } from '../dto/login-user.dto';
 import { Controller, Post, Body, ValidationPipe, BadRequestException, HttpStatus, Get, HttpException } from '@nestjs/common';
+import { UsersService } from './../services/user.service';
 
 @Controller('auth')
 export class AuthController {
@@ -15,12 +17,13 @@ export class AuthController {
     async sign(@Body(new ValidationPipe({
         transform: true,
         whitelist: true,
-    })) user: LoginUserDTO): Promise<string> {
-        const token = await this.authService.signIn(user);
-        if (!token) {
+    })) user: LoginUserDTO): Promise<LoggedInUserDTO> {
+        const userFound = await this.authService.signIn(user);
+        console.log(userFound);
+        if (!userFound) {
             throw new BadRequestException('Wrong credentials');
         }
-        return token;
+        return userFound;
     }
 
     @Post('register')

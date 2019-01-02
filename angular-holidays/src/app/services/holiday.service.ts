@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 export class HolidayService {
 
   private holidaysUrl = 'http://localhost:3000/holidays';
+  private holidayUrlId = 'http://localhost:3000/holidays/:id';
 
   constructor(
     private http: HttpClient,
@@ -18,8 +19,9 @@ export class HolidayService {
     return this.http.get<Holiday[]>(this.holidaysUrl);
   }
   getHoliday(id: number): Observable<Holiday> {
-    this.messageService.add(`HolidayService: fetched holiday id=${id}`);
-    return of(HolidaysList.find(holiday => holiday.id === id));
+    // this.messageService.add(`HolidayService: fetched holiday id=${id}`);
+    // return of(HolidaysList.find(holiday => holiday.id === id));
+    return this.http.get<Holiday>(this.holidayUrlId);
   }
   private log(message: string) {
     this.messageService.add(`HolidayService: ${message}`);

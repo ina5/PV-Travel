@@ -1,10 +1,11 @@
+import { LoggedInUserDTO } from 'src/dto/loggedInUser-dto';
 
 import { LoginUserDTO } from './../dto/login-user.dto';
 import { JwtPayload } from './../interfaces/jwt.interface';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { GetUserDTO } from 'src/dto/get-user.dto';
-import { UsersService } from 'src/services/user.service';
+import { UsersService } from './../services/user.service';
 
 @Injectable()
 export class AuthService {
@@ -12,10 +13,13 @@ export class AuthService {
     private readonly userService: UsersService,
     private readonly jwtService: JwtService) { }
 
-  public async signIn(user: LoginUserDTO): Promise<string> {
-    const userFound: GetUserDTO = await this.userService.signIn(user);
+  public async signIn(user: LoginUserDTO): Promise<LoggedInUserDTO> {
+    console.log(user);
+    const userFound: LoggedInUserDTO = await this.userService.signIn(user);
     if (userFound) {
-      return this.jwtService.sign({ username: userFound.username, password: userFound.password });
+      const token = this.jwtService.sign({ username: userFound.username, password: userFound.password });
+      userFound.token = token;
+      return userFound;
     } else {
       return null;
     }
