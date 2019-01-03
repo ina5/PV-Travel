@@ -1,13 +1,12 @@
 import { Controller, HttpCode, Post, Body, ValidationPipe, HttpException, HttpStatus, Get, Param, Delete, Query, UseGuards, UseInterceptors, FileInterceptor, UploadedFile, BadRequestException, Request } from '@nestjs/common';
-import { CreateHolidayDTO } from 'src/dto/create-holiday.dto';
-import { HolidaysService } from 'src/services/holiday.service';
+import { HolidaysService } from './../services/holiday.service';
 import { AuthGuard } from '@nestjs/passport';
-import { AdminGuard } from 'src/common/guards/admin.guard';
+import { AdminGuard } from './../common/guards/admin.guard';
 import { fileURLToPath } from 'url';
-import { FileService } from 'src/common/core/file.service';
+import { FileService } from './../common/core/file.service';
 import { join } from 'path';
 import { unlink } from 'fs';
-import { BookingHolidayDTO } from 'src/dto/booking-holiday.dto';
+import { CreateHolidayDTO } from './../dto/create-holiday.dto';
 
 @Controller('holidays')
 export class HolidaysController {

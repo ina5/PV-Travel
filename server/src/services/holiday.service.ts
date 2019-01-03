@@ -1,9 +1,9 @@
 import { Holiday } from './../interfaces/holiday.interface';
 import { Injectable, HttpStatus, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { HolidayEntity, LocationEntity, UserEntity } from 'src/data-base/entity';
+import { HolidayEntity, LocationEntity, UserEntity } from './../data-base/entity';
 import { Repository } from 'typeorm';
-import { CreateHolidayDTO } from 'src/dto/create-holiday.dto';
+import { CreateHolidayDTO } from './../dto/create-holiday.dto';
 import { BookingHolidayDTO } from 'src/dto/booking-holiday.dto';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class HolidaysService {
         @InjectRepository(LocationEntity)
         private readonly locationRepository: Repository<LocationEntity>,
                 @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>) { }
+        private readonly userRepository: Repository<UserEntity>) { }
 
     async create(holiday: CreateHolidayDTO) {
 
@@ -53,6 +53,7 @@ export class HolidaysService {
     }
     async remove(id) {
         await this.holidayRepository.delete(id);
+        HttpStatus.NO_CONTENT;
     }
     async findByCriteria(query) {
         const searchCriteria1 = Object.keys(query)[0];
@@ -101,25 +102,19 @@ export class HolidaysService {
         }
     }
 
-    async bookHoliday(holidayId: string, userId: string){
+    async bookHoliday(holidayId: string, userId: string) {
 
-      const foundUserById = await this.userRepository.findOne({ where: { id: userId}});
-      const foundHolidayById = await this.holidayRepository.findOne({ where: { id: holidayId}});
+        const foundUserById = await this.userRepository.findOne({ where: { id: userId } });
+        const foundHolidayById = await this.holidayRepository.findOne({ where: { id: holidayId } });
 
-      if (!foundUserById || !foundHolidayById){
-        throw new BadRequestException('Holiday not found.');
-      }
+        if (!foundUserById || !foundHolidayById) {
+            throw new BadRequestException('Holiday not found.');
+        }
 
-      if (!foundUserById.holidays.find((holiday: HolidayEntity) => holiday.id === foundHolidayById.id)) {
-        foundUserById.holidays.push(foundHolidayById);
-        await this.userRepository.save(foundUserById);
-        // (await foundHolidayById.users).push(foundUserById);
-        // this.holidayRepository.update('title', foundHolidayById);
-      }
-      console.log(foundUserById);
-      console.log(foundHolidayById);
-      // (await foundUserById.holidays).push(foundHolidayById);
-
-      return foundHolidayById;
+        if (!foundUserById.holidays.find((holiday: HolidayEntity) => holiday.id === foundHolidayById.id)) {
+            foundUserById.holidays.push(foundHolidayById);
+            await this.userRepository.save(foundUserById);
+        }
+        return foundHolidayById;
     }
 }
