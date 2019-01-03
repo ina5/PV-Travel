@@ -19,8 +19,7 @@ export class AuthController {
         whitelist: true,
     })) user: LoginUserDTO): Promise<LoggedInUserDTO> {
         const userFound = await this.authService.signIn(user);
-        console.log(userFound);
-        if (!userFound) {
+        if (userFound === undefined) {
             throw new BadRequestException('Wrong credentials');
         }
         return userFound;
