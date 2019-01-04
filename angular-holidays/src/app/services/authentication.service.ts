@@ -18,11 +18,11 @@ export class AuthenticationService {
     login(username: string, password: string) {
         return this.http.post<any>('http://localhost:3000/auth/login', { username, password })
             .pipe(map(user => {
-                if (user && user.token) {
-                    localStorage.setItem('currentUser', JSON.stringify(user));
-                    this.currentUserSubject.next(user);
+                if (user.token) {
+                    localStorage.setItem('currentUser', JSON.stringify(user.token));
+                    this.currentUserSubject.next(user.token);
                 }
-                return user;
+                return user.token;
             }));
     }
     logout() {

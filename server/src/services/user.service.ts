@@ -1,6 +1,6 @@
 import { UserEntity, RoleEntity } from './../data-base/entity';
 import { GetUserDTO } from './../dto/get-user.dto';
-import { Injectable, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpStatus, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LoginUserDTO } from 'src/dto/login-user.dto';
@@ -13,14 +13,12 @@ import { LoggedInUserDTO } from 'src/dto/loggedInUser-dto';
 export class UsersService {
     constructor(@InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-        // tslint:disable-next-line:align
-        @InjectRepository(RoleEntity)
+
+                @InjectRepository(RoleEntity)
         private readonly roleRepository: Repository<RoleEntity>) {
     }
     async signIn(user: LoginUserDTO): Promise<LoggedInUserDTO> {
-        console.log(user);
-        const userFound: LoggedInUserDTO = await this.userRepository.findOne({where: { username: user.username } });
-        console.log(userFound);
+        const userFound: LoggedInUserDTO = await this.userRepository.findOne({ where: { username: user.username } });
         if (userFound) {
             const result = await bcrypt.compare(user.password, userFound.password);
             if (result) {
@@ -39,7 +37,7 @@ export class UsersService {
         const userFoundByEmail = await this.userRepository.findOne({ where: { email: user.email } });
         const userFoundByUsername = await this.userRepository.findOne({ where: { username: user.username } });
         if (userFoundByEmail || userFoundByUsername) {
-            return HttpStatus.CONFLICT;
+            throw new BadRequestException('Email or Username already exists!');
         }
         // Get UserRole from DataBase or create it if does not exist
 
@@ -76,17 +74,17 @@ export class UsersService {
         // Save user into DataBase
         await this.userRepository.create(userEntity);
         await this.userRepository.save([userEntity]);
-        return HttpStatus.CREATED;
+        return userEntity;
     }
     async findAll(): Promise<UserEntity[]> {
         return await this.userRepository.find();
     }
     async  findOne(id) {
-        const result: any = await this.userRepository.findOne(id);
-        if (result) {
-            return result;
+        const foundUser: any = await this.userRepository.findOne(id);
+        if (foundUser) {
+            return foundUser;
         }
-        return HttpStatus.NOT_FOUND;
+        throw new BadRequestException('This user is not exists!');
 
     }
     async findByCriteria(query) {
@@ -98,15 +96,14 @@ export class UsersService {
         if (foundUser) {
             return foundUser;
         }
-        return HttpStatus.NOT_FOUND;
-
+        throw new BadRequestException('This user is not exists!');
     }
     async  remove(id) {
         const userFoundById = await this.userRepository.findByIds(id);
         if (userFoundById) {
             await this.userRepository.delete(id);
-            return HttpStatus.NO_CONTENT;
+            return 'Delete successful';
         }
-        return HttpStatus.NOT_FOUND;
+        throw new BadRequestException('This user is not exists!');
     }
 }

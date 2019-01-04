@@ -4,7 +4,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { HolidayEntity, LocationEntity, UserEntity } from './../data-base/entity';
 import { Repository } from 'typeorm';
 import { CreateHolidayDTO } from './../dto/create-holiday.dto';
-import { BookingHolidayDTO } from 'src/dto/booking-holiday.dto';
 
 @Injectable()
 export class HolidaysService {
@@ -21,7 +20,7 @@ export class HolidaysService {
         // Check if holiday is already exist (by Title)
         const holidayFoundByTitle = await this.holidayRepository.findOne({ where: { title: holiday.title } });
         if (holidayFoundByTitle) {
-            return HttpStatus.CONFLICT;
+            throw new BadRequestException('This holiday already exists!');
         }
 
         const holidayEntity = new HolidayEntity();
@@ -38,22 +37,26 @@ export class HolidaysService {
         // Save holiday into DataBase
         await this.holidayRepository.create(holidayEntity);
         await this.holidayRepository.save([holidayEntity]);
-        return HttpStatus.CREATED;
+        return holidayEntity;
 
     }
     async  findAll(): Promise<HolidayEntity[]> {
         return await this.holidayRepository.find();
     }
-    async findOne(id) {
-        const result: any = await this.holidayRepository.findOne(id);
-        if (result) {
-            return result;
+    async findOne(id): Promise<HolidayEntity> {
+        const foundHoliday = await this.holidayRepository.findOne(id);
+        if (foundHoliday) {
+            return foundHoliday;
         }
-        return HttpStatus.NOT_FOUND;
+        throw new BadRequestException('This holiday is not exists!');
     }
     async remove(id) {
-        await this.holidayRepository.delete(id);
-        HttpStatus.NO_CONTENT;
+        const holidayFoundById = await this.holidayRepository.findByIds(id);
+        if (holidayFoundById) {
+            await this.holidayRepository.delete(id);
+            return 'Delete successful';
+        }
+        throw new BadRequestException('This holiday is not exists!');
     }
     async findByCriteria(query) {
         const searchCriteria1 = Object.keys(query)[0];
@@ -67,7 +70,7 @@ export class HolidaysService {
         if (foundHoliday) {
             return foundHoliday;
         }
-        return HttpStatus.NOT_FOUND;
+        throw new BadRequestException('This holiday is not exists!');
 
     }
     async update(idHoliday, createHolidayDTO) {
@@ -82,10 +85,11 @@ export class HolidaysService {
             // Check if location is already added into DataBase
             const foundLocation = await this.locationRepository.findOne({ where: { name: createHolidayDTO.location } });
             await this.checkForLocation(foundLocation, createHolidayDTO, foundHolidayById);
+
             await this.holidayRepository.update(idHoliday, foundHolidayById);
-            return HttpStatus.OK;
+            return foundHolidayById;
         }
-        return HttpStatus.NOT_FOUND;
+        throw new BadRequestException('This holiday is not exists!');
     }
     private async checkForLocation(foundLocation: LocationEntity, holiday: CreateHolidayDTO, holidayEntity: HolidayEntity) {
         if (foundLocation) {

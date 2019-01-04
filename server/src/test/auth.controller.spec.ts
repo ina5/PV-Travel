@@ -27,7 +27,7 @@ describe('AuthController', () => {
         // Assert
         expect(authenticationService.signIn).toHaveBeenCalledTimes(1);
     });
-    it('should call AuthService signIn method', async () => {
+    it('check if users are equal', async () => {
         // Arrange
         const userService = new UsersService(null, null);
         const authenticationService = new AuthService(userService, null);
@@ -46,7 +46,7 @@ describe('AuthController', () => {
         expect(foundUser).toEqual(user);
 
     });
-    it('should call AuthService signIn method', async () => {
+    it('should catch error if user exist', async () => {
         // Arrange
         const userService = new UsersService(null, null);
         const authenticationService = new AuthService(userService, null);
