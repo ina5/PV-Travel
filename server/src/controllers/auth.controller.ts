@@ -40,6 +40,7 @@ export class AuthController {
             }, 403);
         }
         const user = await this.userService.registerUser(createUser);
+
         return user;
     }
 }

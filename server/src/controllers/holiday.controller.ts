@@ -72,6 +72,7 @@ export class HolidaysController {
         if (Object.getOwnPropertyNames(params).length === 0) {
             return this.holidaysService.findAll();
         }
+
         return this.holidaysService.findByCriteria(params);
     }
     @HttpCode(200)
@@ -79,12 +80,14 @@ export class HolidaysController {
     // DISABLE GUARDS TO TEST ANGULAR
     @UseGuards(AuthGuard('jwt'), AdminGuard)
     findOne(@Param('id') id) {
+
         return this.holidaysService.findOne(id);
     }
     @HttpCode(200)
     @Delete(':id')
     @UseGuards(AuthGuard('jwt'), AdminGuard)
     remove(@Param('id') id) {
+
         return this.holidaysService.remove(id);
     }
     @HttpCode(200)
@@ -97,6 +100,7 @@ export class HolidaysController {
     })) createHolidayDTO: CreateHolidayDTO,
         // tslint:disable-next-line:align
         @Param('id') id) {
+
         return this.holidaysService.update(id, createHolidayDTO);
     }
 

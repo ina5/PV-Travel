@@ -37,6 +37,7 @@ export class HolidaysService {
         // Save holiday into DataBase
         await this.holidayRepository.create(holidayEntity);
         await this.holidayRepository.save([holidayEntity]);
+
         return holidayEntity;
 
     }
@@ -48,6 +49,7 @@ export class HolidaysService {
         if (foundHoliday) {
             return foundHoliday;
         }
+
         throw new BadRequestException('This holiday is not exists!');
     }
     async remove(id) {
@@ -56,6 +58,7 @@ export class HolidaysService {
             await this.holidayRepository.delete(id);
             return 'Delete successful';
         }
+
         throw new BadRequestException('This holiday is not exists!');
     }
     async findByCriteria(query) {
@@ -70,6 +73,7 @@ export class HolidaysService {
         if (foundHoliday) {
             return foundHoliday;
         }
+
         throw new BadRequestException('This holiday is not exists!');
 
     }
@@ -89,6 +93,7 @@ export class HolidaysService {
             await this.holidayRepository.update(idHoliday, foundHolidayById);
             return foundHolidayById;
         }
+
         throw new BadRequestException('This holiday is not exists!');
     }
     private async checkForLocation(foundLocation: LocationEntity, holiday: CreateHolidayDTO, holidayEntity: HolidayEntity) {
@@ -119,6 +124,7 @@ export class HolidaysService {
             foundUserById.holidays.push(foundHolidayById);
             await this.userRepository.save(foundUserById);
         }
+
         return foundHolidayById;
     }
 }

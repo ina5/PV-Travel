@@ -151,4 +151,80 @@ describe('UserService', () => {
         expect(userRepository.findByIds).toHaveBeenCalledTimes(1);
         expect(userRepository.delete).toHaveBeenCalledTimes(1);
     });
+    it('should return exception if userRepository can not find User', async () => {
+        // Arrange
+        const userRepository: any = new Repository<UserEntity>();
+        const roleRepository: any = new Repository<RoleEntity>();
+        const userService = new UsersService(userRepository, roleRepository);
+        let msg = '';
+
+        jest.spyOn(userRepository, 'findOne').mockImplementation(async () => {
+            return undefined;
+        });
+
+        try {
+            await userService.findOne('id');
+        } catch (error) {
+            msg = error.message.message;
+
+        }
+        // Act & Assert
+        expect(msg).toBe('This user is not exists!');
+    });
+    it('should return exception if userRepository can not find User when called findByCriteria UserService', async () => {
+        // Arrange
+        const userRepository: any = new Repository<UserEntity>();
+        const roleRepository: any = new Repository<RoleEntity>();
+        const userService = new UsersService(userRepository, roleRepository);
+        let msg = '';
+
+        jest.spyOn(userRepository, 'find').mockImplementation(async () => {
+            return undefined;
+        });
+
+        try {
+            await userService.findByCriteria({ id: 'fake' });
+        } catch (error) {
+            msg = error.message.message;
+
+        }
+        // Act & Assert
+        expect(msg).toBe('This user is not exists!');
+    });
+    it('should return exception if userRepository can not find User when called findByCriteria UserService', async () => {
+        // Arrange
+        const userRepository: any = new Repository<UserEntity>();
+        const roleRepository: any = new Repository<RoleEntity>();
+        const userService = new UsersService(userRepository, roleRepository);
+        let msg = '';
+
+        jest.spyOn(userRepository, 'findByIds').mockImplementation(async () => {
+            return false;
+        });
+
+        try {
+            await userService.remove('id');
+        } catch (error) {
+            msg = error.message.message;
+
+        }
+        // Act & Assert
+        expect(msg).toBe('This user is not exists!');
+    });
+    it('should return exception if userRepository can not find User when called findByCriteria UserService', async () => {
+        // Arrange
+        const userRepository: any = new Repository<UserEntity>();
+        const roleRepository: any = new Repository<RoleEntity>();
+        const userService = new UsersService(userRepository, roleRepository);
+
+        jest.spyOn(userRepository, 'findByIds').mockImplementation(async () => {
+            return true;
+        });
+        jest.spyOn(userRepository, 'delete').mockImplementation(async () => {
+            return true;
+        });
+        const sut = await userService.remove('id');
+        // Act & Assert
+        expect(sut).toBe('Delete successful');
+    });
 });

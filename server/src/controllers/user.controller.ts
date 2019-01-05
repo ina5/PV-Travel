@@ -12,6 +12,7 @@ export class UsersController {
     @UseGuards(AuthGuard('jwt'), AdminGuard)
     get(@Query() params) {
         if (Object.getOwnPropertyNames(params).length === 0) {
+
             return this.userService.findAll();
         }
 
@@ -21,6 +22,7 @@ export class UsersController {
     @Get(':id')
     @UseGuards(AuthGuard('jwt'), AdminGuard)
     findOne(@Param('id') id: number) {
+
         return this.userService.findOne(id);
     }
 
@@ -28,6 +30,7 @@ export class UsersController {
     @Delete(':id')
     @UseGuards(AuthGuard('jwt'), AdminGuard)
     remove(@Param('id') id) {
+
         return this.userService.remove(id);
     }
 }

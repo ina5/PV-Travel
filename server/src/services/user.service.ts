@@ -34,6 +34,7 @@ export class UsersService {
 
     async validateUser(payload: JwtPayload): Promise<GetUserDTO> {
         const userFound: GetUserDTO = await this.userRepository.findOne({ where: { username: payload.username } });
+
         return userFound;
     }
     async registerUser(user: CreateUserDTO) {
@@ -78,9 +79,11 @@ export class UsersService {
         // Save user into DataBase
         await this.userRepository.create(userEntity);
         await this.userRepository.save([userEntity]);
+
         return userEntity;
     }
     async findAll(): Promise<UserEntity[]> {
+
         return await this.userRepository.find();
     }
     async  findOne(id) {
@@ -110,6 +113,7 @@ export class UsersService {
             await this.userRepository.delete(id);
             return 'Delete successful';
         }
+
         throw new BadRequestException('This user is not exists!');
     }
 }
