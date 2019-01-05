@@ -18,6 +18,13 @@ export class AuthController {
         transform: true,
         whitelist: true,
     })) user: LoginUserDTO): Promise<LoggedInUserDTO> {
+
+        if (Object.keys(user).length === 0) {
+            throw new HttpException({
+                status: HttpStatus.FORBIDDEN,
+                error: 'User is not valid',
+            }, 403);
+        }
         const userFound = await this.authService.signIn(user);
         if (userFound === undefined) {
             throw new BadRequestException('Wrong credentials');

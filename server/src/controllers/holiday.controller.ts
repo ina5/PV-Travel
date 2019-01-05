@@ -67,7 +67,7 @@ export class HolidaysController {
     @HttpCode(200)
     @Get()
     // DISABLE GUARDS TO TEST ANGULAR
-    @UseGuards(AuthGuard('jwt'), AdminGuard)
+    @UseGuards(AuthGuard('jwt'))
     get(@Query() params) {
         if (Object.getOwnPropertyNames(params).length === 0) {
             return this.holidaysService.findAll();
@@ -78,7 +78,7 @@ export class HolidaysController {
     @HttpCode(200)
     @Get(':id')
     // DISABLE GUARDS TO TEST ANGULAR
-    @UseGuards(AuthGuard('jwt'), AdminGuard)
+    @UseGuards(AuthGuard('jwt'))
     findOne(@Param('id') id) {
 
         return this.holidaysService.findOne(id);
