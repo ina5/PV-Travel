@@ -2,7 +2,7 @@ import { LoggedInUserDTO } from 'src/dto/loggedInUser-dto';
 
 import { LoginUserDTO } from './../dto/login-user.dto';
 import { JwtPayload } from './../interfaces/jwt.interface';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { GetUserDTO } from 'src/dto/get-user.dto';
 import { UsersService } from './../services/user.service';
@@ -20,7 +20,7 @@ export class AuthService {
       userFound.token = token;
       return userFound;
     } else {
-      return null;
+      throw new NotFoundException('Wrong credentinals');
     }
   }
   async validateUser(payload: JwtPayload): Promise<GetUserDTO> {
