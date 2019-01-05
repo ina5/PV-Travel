@@ -14,6 +14,7 @@ export class UsersController {
         if (Object.getOwnPropertyNames(params).length === 0) {
             return this.userService.findAll();
         }
+
         return this.userService.findByCriteria(params);
     }
     @HttpCode(200)

@@ -1,3 +1,5 @@
+import { LoggedInUserDTO } from './../dto/loggedInUser-dto';
+import { LoginUserDTO } from './../dto/login-user.dto';
 import { AuthService } from './../auth/auth.service';
 import { UsersService } from './../services/user.service';
 import { JwtServiceMock } from './mocks/jwt.service.mock';
@@ -20,5 +22,47 @@ describe('AuthService', () => {
         // Act
         await authService.validateUser(payload);
         expect(userService.validateUser).toHaveBeenCalledTimes(1);
+    });
+    it('should call userService  method', async () => {
+        // Arrange
+        const userService = new UsersService(null, null);
+        const jwtService = new JwtServiceMock(null);
+        const authService = new AuthService(userService, jwtService);
+        const userFound = new LoginUserDTO();
+        const userLoggedIn = new LoggedInUserDTO();
+
+        jest.spyOn(jwtService, 'sign').mockImplementation(async () => {
+            return 'token';
+        });
+        jest.spyOn(userService, 'signIn').mockImplementation(async () => {
+            return userLoggedIn;
+        });
+        const user = await authService.signIn(userFound);
+        // Act & Assert
+        expect(user.token).toBe('token');
+    });
+    it('should return exception', async () => {
+        // Arrange
+        const userService = new UsersService(null, null);
+        const jwtService = new JwtServiceMock(null);
+        const authService = new AuthService(userService, jwtService);
+        const userFound = new LoginUserDTO();
+        let msg = '';
+
+        jest.spyOn(jwtService, 'sign').mockImplementation(async () => {
+            return undefined;
+        });
+        jest.spyOn(userService, 'signIn').mockImplementation(async () => {
+            return undefined;
+        });
+
+        try {
+            await authService.signIn(userFound);
+        } catch (error) {
+            msg = error.message.message;
+
+        }
+        // Act & Assert
+        expect(msg).toBe('Wrong credentinals');
     });
 });

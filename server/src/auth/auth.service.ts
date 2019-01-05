@@ -16,7 +16,7 @@ export class AuthService {
   public async signIn(user: LoginUserDTO): Promise<LoggedInUserDTO> {
     const userFound: LoggedInUserDTO = await this.userService.signIn(user);
     if (userFound) {
-      const token = this.jwtService.sign({ username: userFound.username, password: userFound.password });
+      const token = await this.jwtService.sign({ username: userFound.username, password: userFound.password });
       userFound.token = token;
       return userFound;
     } else {
@@ -24,6 +24,7 @@ export class AuthService {
     }
   }
   async validateUser(payload: JwtPayload): Promise<GetUserDTO> {
+
     return await this.userService.validateUser(payload);
   }
 }

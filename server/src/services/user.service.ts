@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtPayload } from 'src/interfaces/jwt.interface';
 import { CreateUserDTO } from 'src/dto/create-user.dto';
 import { LoggedInUserDTO } from 'src/dto/loggedInUser-dto';
+import { HTTP_SERVER_REF } from '@nestjs/core';
 
 @Injectable()
 export class UsersService {
@@ -19,12 +20,15 @@ export class UsersService {
     }
     async signIn(user: LoginUserDTO): Promise<LoggedInUserDTO> {
         const userFound: LoggedInUserDTO = await this.userRepository.findOne({ where: { username: user.username } });
+
         if (userFound) {
             const result = await bcrypt.compare(user.password, userFound.password);
+
             if (result) {
                 return userFound;
             }
         }
+
         return null;
     }
 
@@ -84,6 +88,7 @@ export class UsersService {
         if (foundUser) {
             return foundUser;
         }
+
         throw new BadRequestException('This user is not exists!');
 
     }
@@ -96,6 +101,7 @@ export class UsersService {
         if (foundUser) {
             return foundUser;
         }
+
         throw new BadRequestException('This user is not exists!');
     }
     async  remove(id) {
