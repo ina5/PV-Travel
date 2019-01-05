@@ -12,7 +12,8 @@ export class HolidaysService {
         // tslint:disable-next-line:align
         @InjectRepository(LocationEntity)
         private readonly locationRepository: Repository<LocationEntity>,
-                @InjectRepository(UserEntity)
+        // tslint:disable-next-line:align
+        @InjectRepository(UserEntity)
         private readonly userRepository: Repository<UserEntity>) { }
 
     async create(holiday: CreateHolidayDTO) {
@@ -50,7 +51,7 @@ export class HolidaysService {
             return foundHoliday;
         }
 
-        throw new BadRequestException('This holiday is not exists!');
+        throw new BadRequestException('This holiday does not exist!');
     }
     async remove(id) {
         const holidayFoundById = await this.holidayRepository.findByIds(id);
@@ -59,7 +60,7 @@ export class HolidaysService {
             return 'Delete successful';
         }
 
-        throw new BadRequestException('This holiday is not exists!');
+        throw new BadRequestException('This holiday does not exist!');
     }
     async findByCriteria(query) {
         const searchCriteria1 = Object.keys(query)[0];
@@ -91,15 +92,17 @@ export class HolidaysService {
             await this.checkForLocation(foundLocation, createHolidayDTO, foundHolidayById);
 
             await this.holidayRepository.update(idHoliday, foundHolidayById);
+
             return foundHolidayById;
         }
-
         throw new BadRequestException('This holiday is not exists!');
     }
-    private async checkForLocation(foundLocation: LocationEntity, holiday: CreateHolidayDTO, holidayEntity: HolidayEntity) {
+    private async checkForLocation(foundLocation: LocationEntity, holiday: CreateHolidayDTO, holidayEntity: HolidayEntity): Promise<string> {
         if (foundLocation) {
             holiday.location = foundLocation;
             holidayEntity.location = holiday.location;
+
+            return 'Location found.';
         }
         else {
             // Create location and save it into DataBase
@@ -108,6 +111,8 @@ export class HolidaysService {
             await this.locationRepository.create(location);
             await this.locationRepository.save([location]);
             holidayEntity.location = location;
+
+            return 'Location created.';
         }
     }
 
