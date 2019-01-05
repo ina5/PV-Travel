@@ -1,5 +1,6 @@
 
 import { IsString } from 'class-validator';
+import { RoleEntity } from 'src/data-base/entity';
 export class LoggedInUserDTO {
 
     id: number;
@@ -8,11 +9,9 @@ export class LoggedInUserDTO {
     @IsString()
     password: string;
     @IsString()
-    firstName: string;
-    @IsString()
-    lastName: string;
-    @IsString()
     email: string;
     @IsString()
     token?: string;
+
+    role: RoleEntity;
 }

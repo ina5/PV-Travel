@@ -1,4 +1,4 @@
-import { LoggedInUserDTO } from './../dto/loggedInUser-dto';
+import { LoggedInUserDTO } from 'src/dto/loggedInUser-dto';
 
 import { CreateUserDTO } from './../dto/create-user.dto';
 import { AuthService } from '../auth/auth.service';
@@ -29,6 +29,7 @@ export class AuthController {
         if (userFound === undefined) {
             throw new BadRequestException('Wrong credentials');
         }
+
         return userFound;
     }
 

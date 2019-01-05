@@ -13,6 +13,7 @@ export class AuthenticationService {
         this.currentUser = this.currentUserSubject.asObservable();
     }
     public get currentUserValue(): User {
+        console.log(this.currentUserSubject.value);
         return this.currentUserSubject.value;
     }
     login(username: string, password: string) {
@@ -22,6 +23,7 @@ export class AuthenticationService {
                     localStorage.setItem('currentUser', JSON.stringify(user.token));
                     this.currentUserSubject.next(user.token);
                 }
+
                 return user.token;
             }));
     }

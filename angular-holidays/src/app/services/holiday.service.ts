@@ -16,11 +16,11 @@ export class HolidayService {
     private http: HttpClient,
     private messageService: MessageService) { }
   getHolidays(): Observable<Holiday[]> {
+
     return this.http.get<Holiday[]>(this.holidaysUrl);
   }
   getHoliday(id: number): Observable<Holiday> {
-    // this.messageService.add(`HolidayService: fetched holiday id=${id}`);
-    // return of(HolidaysList.find(holiday => holiday.id === id));
+
     return this.http.get<Holiday>(this.holidayUrlId);
   }
   private log(message: string) {
