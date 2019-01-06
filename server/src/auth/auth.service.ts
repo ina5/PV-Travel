@@ -1,10 +1,9 @@
-import { LoggedInUserDTO } from 'src/dto/loggedInUser-dto';
-
+import { UserTokenDto } from './../dto/user-token.dto';
 import { LoginUserDTO } from './../dto/login-user.dto';
 import { JwtPayload } from './../interfaces/jwt.interface';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { GetUserDTO } from 'src/dto/get-user.dto';
+import { GetUserDTO } from './../dto/get-user.dto';
 import { UsersService } from './../services/user.service';
 
 @Injectable()
@@ -13,8 +12,8 @@ export class AuthService {
     private readonly userService: UsersService,
     private readonly jwtService: JwtService) { }
 
-  public async signIn(user: LoginUserDTO): Promise<LoggedInUserDTO> {
-    const userFound: LoggedInUserDTO = await this.userService.signIn(user);
+  public async signIn(user: LoginUserDTO): Promise<UserTokenDto> {
+    const userFound: UserTokenDto = await this.userService.signIn(user);
     if (userFound) {
       const token = await this.jwtService.sign({ username: userFound.username, role: userFound.role });
       userFound.token = token;

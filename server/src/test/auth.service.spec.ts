@@ -1,4 +1,4 @@
-import { LoggedInUserDTO } from './../dto/loggedInUser-dto';
+import { UserTokenDto } from './../dto/user-token.dto';
 import { LoginUserDTO } from './../dto/login-user.dto';
 import { AuthService } from './../auth/auth.service';
 import { UsersService } from './../services/user.service';
@@ -29,13 +29,13 @@ describe('AuthService', () => {
         const jwtService = new JwtServiceMock(null);
         const authService = new AuthService(userService, jwtService);
         const userFound = new LoginUserDTO();
-        const userLoggedIn = new LoggedInUserDTO();
+        const userToken = new UserTokenDto();
 
         jest.spyOn(jwtService, 'sign').mockImplementation(async () => {
             return 'token';
         });
         jest.spyOn(userService, 'signIn').mockImplementation(async () => {
-            return userLoggedIn;
+            return userToken;
         });
         const user = await authService.signIn(userFound);
         // Act & Assert

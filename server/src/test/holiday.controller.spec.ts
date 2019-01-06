@@ -2,7 +2,6 @@ import { CreateHolidayDTO } from './../dto/create-holiday.dto';
 import { HttpStatus } from '@nestjs/common';
 import { HolidaysController } from './../controllers/holiday.controller';
 import { HolidaysService } from './../services/holiday.service';
-import { any } from 'joi';
 jest.mock('./../services/holiday.service.ts');
 
 describe('HolidayController', () => {

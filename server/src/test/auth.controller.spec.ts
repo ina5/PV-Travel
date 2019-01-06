@@ -1,9 +1,9 @@
-import { HttpStatus } from '@nestjs/common';
-import { CreateUserDTO } from './../dto/create-user.dto';
+import { UserTokenDto } from './../dto/user-token.dto';
 import { LoginUserDTO } from './../dto/login-user.dto';
 import { AuthService } from './../auth/auth.service';
 import { AuthController } from './../controllers/auth.controller';
 import { UsersService } from './../services/user.service';
+import { RoleEntity } from './../data-base/entity';
 
 jest.mock('./../auth/auth.service');
 jest.mock('./../services/user.service');
@@ -16,9 +16,14 @@ describe('AuthController', () => {
         const authenticationService = new AuthService(userService, null);
         const controller = new AuthController(authenticationService, userService);
         const user = new LoginUserDTO();
+        user.username = 'test';
+        user.password = '1435';
+        const userToken = new UserTokenDto();
+        userToken.username = 'test';
+        userToken.role = new RoleEntity();
 
         jest.spyOn(authenticationService, 'signIn').mockImplementation(() => {
-            return 'token';
+            return userToken;
         });
 
         // Act
@@ -33,9 +38,12 @@ describe('AuthController', () => {
         const authenticationService = new AuthService(userService, null);
         const controller = new AuthController(authenticationService, userService);
         const user = new LoginUserDTO();
+        user.username = 'test';
+        const userToken = new UserTokenDto();
+        userToken.username = 'test';
 
         jest.spyOn(authenticationService, 'signIn').mockImplementation(() => {
-            return {};
+            return userToken;
         });
 
         // Act
@@ -43,7 +51,7 @@ describe('AuthController', () => {
         const foundUser = await authenticationService.signIn(user);
 
         // Assert
-        expect(foundUser).toEqual(user);
+        expect(foundUser.username).toEqual(user.username);
 
     });
     it('should catch error if user exist', async () => {

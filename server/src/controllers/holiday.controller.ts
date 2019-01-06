@@ -2,7 +2,6 @@ import { Controller, HttpCode, Post, Body, ValidationPipe, HttpException, HttpSt
 import { HolidaysService } from './../services/holiday.service';
 import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from './../common/guards/admin.guard';
-import { fileURLToPath } from 'url';
 import { FileService } from './../common/core/file.service';
 import { join } from 'path';
 import { unlink } from 'fs';
@@ -42,7 +41,7 @@ export class HolidaysController {
             createHolidayDTO.pictureUrl = join(folder, file.filename);
         }
         try {
-            console.log(createHolidayDTO);
+
             await this.holidaysService.create(createHolidayDTO);
             return 'Holiday was created';
         } catch (error) {

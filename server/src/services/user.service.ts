@@ -1,14 +1,13 @@
+import { UserTokenDto } from './../dto/user-token.dto';
 import { UserEntity, RoleEntity } from './../data-base/entity';
 import { GetUserDTO } from './../dto/get-user.dto';
 import { Injectable, HttpStatus, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { LoginUserDTO } from 'src/dto/login-user.dto';
+import { LoginUserDTO } from './../dto/login-user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from 'src/interfaces/jwt.interface';
 import { CreateUserDTO } from 'src/dto/create-user.dto';
-import { LoggedInUserDTO } from 'src/dto/loggedInUser-dto';
-import { HTTP_SERVER_REF } from '@nestjs/core';
 
 @Injectable()
 export class UsersService {
@@ -18,14 +17,19 @@ export class UsersService {
                 @InjectRepository(RoleEntity)
         private readonly roleRepository: Repository<RoleEntity>) {
     }
-    async signIn(user: LoginUserDTO): Promise<LoggedInUserDTO> {
-        const userFound: LoggedInUserDTO = await this.userRepository.findOne({ where: { username: user.username } });
+    async signIn(user: LoginUserDTO): Promise<UserTokenDto> {
+        const userFound: UserEntity = await this.userRepository.findOne({ where: { username: user.username } });
 
         if (userFound) {
             const result = await bcrypt.compare(user.password, userFound.password);
 
             if (result) {
-                return userFound;
+                const userResult = new UserTokenDto();
+
+                userResult.username = userFound.username;
+                userResult.role = userFound.role;
+
+                return userResult;
             }
         }
 

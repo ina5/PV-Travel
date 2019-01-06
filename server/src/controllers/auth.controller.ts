@@ -1,10 +1,9 @@
-import { LoggedInUserDTO } from 'src/dto/loggedInUser-dto';
-
 import { CreateUserDTO } from './../dto/create-user.dto';
 import { AuthService } from '../auth/auth.service';
 import { LoginUserDTO } from '../dto/login-user.dto';
 import { Controller, Post, Body, ValidationPipe, BadRequestException, HttpStatus, Get, HttpException } from '@nestjs/common';
 import { UsersService } from './../services/user.service';
+import { UserTokenDto } from './../dto/user-token.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -17,7 +16,7 @@ export class AuthController {
     async sign(@Body(new ValidationPipe({
         transform: true,
         whitelist: true,
-    })) user: LoginUserDTO): Promise<LoggedInUserDTO> {
+    })) user: LoginUserDTO): Promise<UserTokenDto> {
 
         if (Object.keys(user).length === 0) {
             throw new HttpException({

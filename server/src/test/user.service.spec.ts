@@ -1,4 +1,5 @@
-import { LoggedInUserDTO } from './../dto/loggedInUser-dto';
+import { UserTokenDto } from './../dto/user-token.dto';
+import { LoginUserDTO } from './../dto/login-user.dto';
 import { CreateUserDTO } from './../dto/create-user.dto';
 import { JwtPayload } from './../interfaces/jwt.interface';
 import { UsersService } from './../services/user.service';
@@ -19,27 +20,33 @@ describe('UserService', () => {
             return true;
         });
         const userService = new UsersService(userRepository, roleRepository);
-        const loggedInUser = new LoggedInUserDTO();
-        await userService.signIn(loggedInUser);
+        const logInUser = new LoginUserDTO();
+        await userService.signIn(logInUser);
         // Assert
         expect(bcrypt.compare).toHaveBeenCalledTimes(1);
     });
-    it('call userService method and check to return true', async () => {
+    it('call userService method and check to return Equal Parameters', async () => {
         // Arrange
         const userRepository: any = new Repository<UserEntity>();
         const roleRepository: any = new Repository<RoleEntity>();
+        const role = new RoleEntity();
+        role.id = 123;
+        role.name = 'test';
+        const userToken = new UserTokenDto();
+        userToken.username = 'test';
+        userToken.role = role;
         // Act
         jest.spyOn(bcrypt, 'compare').mockImplementation(() => {
             return true;
         });
         const userFound = jest.spyOn(userRepository, 'findOne').mockImplementation(() => {
-            return true;
+            return userToken;
         });
         const userService = new UsersService(userRepository, roleRepository);
-        const loggedInUser = new LoggedInUserDTO();
-        const sut = await userService.signIn(loggedInUser);
+        const logInUser = new LoginUserDTO();
+        const sut = await userService.signIn(logInUser);
         // Assert
-        expect(sut).toBe(true);
+        expect(sut).toEqual(userToken);
     });
     it('should call UserRepository findOne method when call ValidateUser method', async () => {
         // Arrange
