@@ -10,20 +10,8 @@ export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<LoggedInUser>;
     private loggedIn: LoggedInUser;
     public currentUser: Observable<LoggedInUser>;
-    constructor(private http: HttpClient) {
-        //   this.currentUserSubject = new BehaviorSubject<LoggedInUser>(JSON.parse(this.token));
+    constructor(private http: HttpClient) { }
 
-        if (localStorage.getItem('currentUser') === null) {
-            console.log('We do not have user yet!');
-        } else {
-            this.loggedIn = new LoggedInUser();
-            const decodedUser = this.getDecodedAccessToken(localStorage.getItem('currentUser'));
-            this.loggedIn = decodedUser;
-            this.loggedIn.token = localStorage.getItem('currentUser');
-            this.currentUserSubject = new BehaviorSubject<LoggedInUser>(this.loggedIn);
-            this.currentUser = this.currentUserSubject.asObservable();
-        }
-    }
     public currentUserValue(): LoggedInUser {
         if (this.currentUserSubject !== undefined) {
 
@@ -37,6 +25,12 @@ export class AuthenticationService {
             .pipe(map(user => {
                 if (user.token) {
                     localStorage.setItem('currentUser', user.token);
+                    this.loggedIn = new LoggedInUser();
+                    const decodedUser = this.getDecodedAccessToken(localStorage.getItem('currentUser'));
+                    this.loggedIn = decodedUser;
+                    this.loggedIn.token = localStorage.getItem('currentUser');
+                    this.currentUserSubject = new BehaviorSubject<LoggedInUser>(this.loggedIn);
+                    this.currentUser = this.currentUserSubject.asObservable();
                     // this.currentUserSubject.next(user.token);
                 }
 
