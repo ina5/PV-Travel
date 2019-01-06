@@ -1,5 +1,4 @@
-import { Holiday } from './../interfaces/holiday.interface';
-import { Injectable, HttpStatus, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HolidayEntity, LocationEntity, UserEntity } from './../data-base/entity';
 import { Repository } from 'typeorm';
