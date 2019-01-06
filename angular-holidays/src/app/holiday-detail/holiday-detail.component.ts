@@ -20,10 +20,12 @@ export class HolidayDetailComponent implements OnInit {
   ngOnInit(): void {
     this.getHoliday();
   }
-  getHoliday(): void {
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.holidayService.getHoliday(id)
-      .subscribe(holiday => this.holiday = holiday);
+  private getHoliday(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+
+    this.holidayService.getHoliday(id).subscribe(holiday => {
+      this.holiday = holiday;
+    });
   }
   goBack(): void {
     this.location.back();

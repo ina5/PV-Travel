@@ -1,6 +1,5 @@
 <div *ngIf="holiday">
   <h2>{{holiday.title | uppercase}} Details</h2>
-  <div><span>id: </span>{{holiday.id}}</div>
   <div>
     <label>title:
       <input [(ngModel)]="holiday.title" placeholder="title">
