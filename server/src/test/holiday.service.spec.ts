@@ -175,7 +175,7 @@ describe('HolidayService', () => {
     expect(holidayRepository.delete).toHaveBeenCalledTimes(1);
   });
 
-  it('holidayRepository delete method should return when holidayService remove method is called', async () => {
+  it('delete method should return when holidayService remove method is called', async () => {
     // Arrange
     const userRepository: any = new Repository<UserEntity>();
     const holidayRepository: any = new Repository<HolidayEntity>();
@@ -201,4 +201,284 @@ describe('HolidayService', () => {
     // Assert
     expect(holidayRepository.delete).toReturn();
   });
+
+  it('should throw when findByCriteria method is called', async () => {
+    // Arrange
+    const userRepository: any = new Repository<UserEntity>();
+    const holidayRepository: any = new Repository<HolidayEntity>();
+    const locationRepository: any = new Repository<LocationEntity>();
+    const holidayService: any = new HolidaysService(holidayRepository, locationRepository, userRepository);
+    let msg = '';
+
+    jest.spyOn(holidayRepository, 'find').mockImplementation(() => {
+      return false;
+    });
+    jest.spyOn(locationRepository, 'findOne').mockImplementation(() => {
+      return true;
+    });
+
+    // Act
+
+    try {
+      await holidayService.findByCriteria({ id: 'fake' });
+    } catch (error) {
+      msg = error.message.message;
+
+    }
+    // Assert
+    expect(msg).toBe('This holiday does not exist!');
+  });
+
+  it('should call locationRepository findOne method when findByCriteria method is called', async () => {
+    // Arrange
+    const userRepository: any = new Repository<UserEntity>();
+    const holidayRepository: any = new Repository<HolidayEntity>();
+    const locationRepository: any = new Repository<LocationEntity>();
+    const holidayService: any = new HolidaysService(holidayRepository, locationRepository, userRepository);
+    let msg = '';
+
+    jest.spyOn(holidayRepository, 'find').mockImplementation(() => {
+      return true;
+    });
+    jest.spyOn(locationRepository, 'findOne').mockImplementation(() => {
+      return true;
+    });
+
+    // Act
+
+    try {
+      await holidayService.findByCriteria({ id: 'fake' });
+    } catch (error) {
+      msg = error.message.message;
+
+    }
+    // Assert
+    expect(locationRepository.findOne).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call holidayRepository find method when findByCriteria method is called', async () => {
+    // Arrange
+    const userRepository: any = new Repository<UserEntity>();
+    const holidayRepository: any = new Repository<HolidayEntity>();
+    const locationRepository: any = new Repository<LocationEntity>();
+    const holidayService: any = new HolidaysService(holidayRepository, locationRepository, userRepository);
+    let msg = '';
+
+    jest.spyOn(holidayRepository, 'find').mockImplementation(() => {
+      return true;
+    });
+    jest.spyOn(locationRepository, 'findOne').mockImplementation(() => {
+      return true;
+    });
+
+    // Act
+
+    try {
+      await holidayService.findByCriteria({ id: 'fake' });
+    } catch (error) {
+      msg = error.message.message;
+
+    }
+    // Assert
+    expect(holidayRepository.find).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call locationRepository findOne method when update method is called', async () => {
+    // Arrange
+    const userRepository: any = new Repository<UserEntity>();
+    const holidayRepository: any = new Repository<HolidayEntity>();
+    const locationRepository: any = new Repository<LocationEntity>();
+    const holidayService: any = new HolidaysService(holidayRepository, locationRepository, userRepository);
+    let msg = '';
+
+    jest.spyOn(holidayRepository, 'findOne').mockImplementation(() => {
+      return true;
+    });
+    jest.spyOn(locationRepository, 'findOne').mockImplementation(() => {
+      return true;
+    });
+    jest.spyOn(holidayRepository, 'update').mockImplementation(() => {
+      return true;
+    });
+
+    // Act
+
+    try {
+      await holidayService.update({ id: 'fake' });
+    } catch (error) {
+      msg = error.message.message;
+
+    }
+    // Assert
+    expect(holidayRepository.findOne).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call holidayRepository findOne method when update method is called', async () => {
+    // Arrange
+    const userRepository: any = new Repository<UserEntity>();
+    const holidayRepository: any = new Repository<HolidayEntity>();
+    const locationRepository: any = new Repository<LocationEntity>();
+    const holidayService: any = new HolidaysService(holidayRepository, locationRepository, userRepository);
+    let msg = '';
+
+    jest.spyOn(holidayRepository, 'findOne').mockImplementation(() => {
+      return true;
+    });
+    jest.spyOn(locationRepository, 'findOne').mockImplementation(() => {
+      return true;
+    });
+    jest.spyOn(holidayRepository, 'update').mockImplementation(() => {
+      return true;
+    });
+
+    // Act
+
+    try {
+      await holidayService.update({ id: 'fake' });
+    } catch (error) {
+      msg = error.message.message;
+
+    }
+    // Assert
+    expect(holidayRepository.findOne).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call holidayRepository update method when update method is called', async () => {
+    // Arrange
+    const userRepository: any = new Repository<UserEntity>();
+    const holidayRepository: any = new Repository<HolidayEntity>();
+    const locationRepository: any = new Repository<LocationEntity>();
+    const holidayService: any = new HolidaysService(holidayRepository, locationRepository, userRepository);
+    const holidayDTO = new CreateHolidayDTO();
+    let msg = '';
+
+    jest.spyOn(holidayRepository, 'findOne').mockImplementation(() => {
+      return {};
+    });
+    jest.spyOn(locationRepository, 'findOne').mockImplementation(() => {
+      return {};
+    });
+    const test = jest.spyOn(holidayRepository, 'update').mockImplementation(() => {
+      return true;
+    });
+
+    // Act
+
+    try {
+      await holidayService.update({ id: 'fake' }, holidayDTO);
+    } catch (error) {
+      msg = 'pesho';
+    }
+    // Assert
+    expect(test).toHaveBeenCalledTimes(1);
+  });
+
+  it('should throw when update method is called', async () => {
+    // Arrange
+    const userRepository: any = new Repository<UserEntity>();
+    const holidayRepository: any = new Repository<HolidayEntity>();
+    const locationRepository: any = new Repository<LocationEntity>();
+    const holidayService: any = new HolidaysService(holidayRepository, locationRepository, userRepository);
+    const holidayDTO = new CreateHolidayDTO();
+    let msg = '';
+
+    jest.spyOn(holidayRepository, 'findOne').mockImplementation(() => {
+      return false;
+    });
+    jest.spyOn(locationRepository, 'findOne').mockImplementation(() => {
+      return {};
+    });
+    const test = jest.spyOn(holidayRepository, 'update').mockImplementation(() => {
+      return true;
+    });
+
+    // Act
+
+    try {
+      await holidayService.update({ id: 'fake' }, holidayDTO);
+    } catch (error) {
+      msg = error.message.message;
+    }
+    // Assert
+    expect(msg).toBe('This holiday does not exist!');
+  });
+
+  it('should call holidayRepository findOne method when bookHoliday method is called', async () => {
+    // Arrange
+    const userRepository: any = new Repository<UserEntity>();
+    const holidayRepository: any = new Repository<HolidayEntity>();
+    const locationRepository: any = new Repository<LocationEntity>();
+    const holidayService: any = new HolidaysService(holidayRepository, locationRepository, userRepository);
+    let msg = '';
+
+    jest.spyOn(holidayRepository, 'findOne').mockImplementation(() => {
+      return true;
+    });
+    jest.spyOn(userRepository, 'findOne').mockImplementation(() => {
+      return true;
+    });
+
+    // Act
+    try {
+      await holidayService.bookHoliday({ id: 'fake' }, { id: 'fake' });
+    } catch (error) {
+      msg = error.message.message;
+
+    }
+    // Assert
+    expect(holidayRepository.findOne).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call userRepository findOne method when bookHoliday method is called', async () => {
+    // Arrange
+    const userRepository: any = new Repository<UserEntity>();
+    const holidayRepository: any = new Repository<HolidayEntity>();
+    const locationRepository: any = new Repository<LocationEntity>();
+    const holidayService: any = new HolidaysService(holidayRepository, locationRepository, userRepository);
+    let msg = '';
+
+    jest.spyOn(holidayRepository, 'findOne').mockImplementation(() => {
+      return false;
+    });
+    jest.spyOn(userRepository, 'findOne').mockImplementation(() => {
+      return true;
+    });
+
+    // Act
+    try {
+      await holidayService.bookHoliday({ id: 'fake' }, { id: 'fake' });
+    } catch (error) {
+      msg = error.message.message;
+
+    }
+    // Assert
+    expect(userRepository.findOne).toHaveBeenCalledTimes(1);
+  });
+
+  it('should throw when bookHoliday method is called', async () => {
+    // Arrange
+    const userRepository: any = new Repository<UserEntity>();
+    const holidayRepository: any = new Repository<HolidayEntity>();
+    const locationRepository: any = new Repository<LocationEntity>();
+    const holidayService: any = new HolidaysService(holidayRepository, locationRepository, userRepository);
+    let msg = '';
+
+    jest.spyOn(holidayRepository, 'findOne').mockImplementation(() => {
+      return false;
+    });
+    jest.spyOn(userRepository, 'findOne').mockImplementation(() => {
+      return true;
+    });
+
+    // Act
+    try {
+      await holidayService.bookHoliday({ id: 'fake' }, { id: 'fake' });
+    } catch (error) {
+      msg = error.message.message;
+
+    }
+    // Assert
+    expect(msg).toBe('Holiday not found.');
+  });
+
 });
