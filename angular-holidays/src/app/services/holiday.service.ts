@@ -1,4 +1,3 @@
-import { HolidaysList } from '../holidays/mock-holidays';
 import { Injectable } from '@angular/core';
 import { Holiday } from '../holidays/holiday';
 import { Observable, of } from 'rxjs';
@@ -10,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class HolidayService {
 
   private holidaysUrl = 'http://localhost:3000/holidays';
-  private holidayUrlId = 'http://localhost:3000/holidays/:id';
+  private holidayUrlId = 'http://localhost:3000/holidays/';
 
   constructor(
     private http: HttpClient,
@@ -19,9 +18,9 @@ export class HolidayService {
 
     return this.http.get<Holiday[]>(this.holidaysUrl);
   }
-  getHoliday(id: number): Observable<Holiday> {
+  getHoliday(id: string): Observable<Holiday> {
 
-    return this.http.get<Holiday>(this.holidayUrlId);
+    return this.http.get<Holiday>(this.holidayUrlId + id);
   }
   private log(message: string) {
     this.messageService.add(`HolidayService: ${message}`);

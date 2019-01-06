@@ -31,7 +31,6 @@ export class AuthenticationService {
                     this.loggedIn.token = localStorage.getItem('currentUser');
                     this.currentUserSubject = new BehaviorSubject<LoggedInUser>(this.loggedIn);
                     this.currentUser = this.currentUserSubject.asObservable();
-                    // this.currentUserSubject.next(user.token);
                 }
 
                 return user.token;
