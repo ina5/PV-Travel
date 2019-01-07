@@ -19,7 +19,8 @@ Our URL Routing:
 | /holidays/create                  |   ✔️           |    ✘          |     ✘        |
 | /holidays?location=''&price=''    |   ✔️           |    ✔️          |     ✘        |
 | /holidays/update/id               |   ✔️           |    ✘          |     ✘        |
-| !!!/holidays/book                 |   ✔️           |    ✔️          |     ✘        |
+| /holidays/book                    |   ✔️           |    ✔️          |     ✘        |
+| /holidays/booked                  |   ✔️           |    ✔️          |     ✘        |
 | /users                            |   ✔️           |    ✘          |     ✘        |
 | /users?params                     |   ✔️           |    ✘          |     ✘        |
 | /users/id                         |   ✔️           |    ✘          |     ✘        |
