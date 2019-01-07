@@ -1,3 +1,4 @@
+import { User } from './../interfaces/user.interface';
 import { UserTokenDto } from './../dto/user-token.dto';
 import { UserEntity, RoleEntity } from './../data-base/entity';
 import { GetUserDTO } from './../dto/get-user.dto';
@@ -92,7 +93,7 @@ export class UsersService {
         return await this.userRepository.find();
     }
     async  findOne(id) {
-        const foundUser: any = await this.userRepository.findOne(id);
+        const foundUser = await this.userRepository.findOne(id);
         if (foundUser) {
             return foundUser;
         }
