@@ -12,8 +12,7 @@ export class HolidaysController {
     constructor(private readonly holidaysService: HolidaysService) { }
     @HttpCode(201)
     @Post('create')
-    // DISABLE GUARDS TO TEST ANGULAR
-     @UseGuards(AuthGuard('jwt'), AdminGuard)
+    @UseGuards(AuthGuard('jwt'), AdminGuard)
     @UseInterceptors(FileInterceptor('picture', {
         limits: FileService.fileLimit(1, 2 * 1024 * 1024),
         storage: FileService.storage(['public', 'images']),
@@ -65,7 +64,6 @@ export class HolidaysController {
     }
     @HttpCode(200)
     @Get()
-    // DISABLE GUARDS TO TEST ANGULAR
     @UseGuards(AuthGuard('jwt'))
     get(@Query() params) {
         if (Object.getOwnPropertyNames(params).length === 0) {
@@ -76,7 +74,6 @@ export class HolidaysController {
     }
     @HttpCode(200)
     @Get(':id')
-    // DISABLE GUARDS TO TEST ANGULAR
     @UseGuards(AuthGuard('jwt'))
     findOne(@Param('id') id) {
 
@@ -91,8 +88,7 @@ export class HolidaysController {
     }
     @HttpCode(200)
     @Post('update/:id')
-    // DISABLE GUARDS TO TEST ANGULAR
-     @UseGuards(AuthGuard('jwt'), AdminGuard)
+    @UseGuards(AuthGuard('jwt'), AdminGuard)
     update(@Body(new ValidationPipe({
         whitelist: true,
         transform: true,
@@ -105,14 +101,28 @@ export class HolidaysController {
 
     @HttpCode(200)
     @Post('book')
-    // DISABLE GUARDS TO TEST ANGULAR
-     @UseGuards(AuthGuard('jwt'))
+    @UseGuards(AuthGuard('jwt'))
     async book(@Body() body, @Request() req) {
+        console.log(body);
         if (body.holidayId === undefined) {
             throw new BadRequestException('Wrong credentials.');
         }
         try {
             return await this.holidaysService.bookHoliday(body.holidayId, req.user.id);
+        }
+        catch (error) {
+            return error.message;
+        }
+    }
+    @HttpCode(200)
+    @Get('booked')
+    @UseGuards(AuthGuard('jwt'))
+    async booked(@Request() req) {
+        if (req.user.id === undefined) {
+            throw new BadRequestException('Wrong credentials.');
+        }
+        try {
+            return await this.holidaysService.getUserHolidays(req.user.id);
         }
         catch (error) {
             return error.message;

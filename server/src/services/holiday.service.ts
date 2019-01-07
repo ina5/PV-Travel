@@ -1,3 +1,4 @@
+import { Holiday } from './../interfaces/holiday.interface';
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HolidayEntity, LocationEntity, UserEntity } from './../data-base/entity';
@@ -130,5 +131,12 @@ export class HolidaysService {
     }
 
     return foundHolidayById;
+  }
+  async getUserHolidays(userId: string): Promise<HolidayEntity[]> {
+    console.log(userId);
+    const foundUserById = await this.userRepository.findOne({ where: { id: userId } });
+    console.log(foundUserById);
+
+    return foundUserById.holidays;
   }
 }
